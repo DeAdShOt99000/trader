@@ -20,7 +20,6 @@ def sell():
     form.location.data = "1"
     
     if form.validate_on_submit():
-        print(form.picture.data.filename)
         item = Item(
             title=form.title.data,
             description=form.description.data,

@@ -26,6 +26,7 @@ class Item(db.Model):
     price = db.Column(db.Float, default=0, nullable=False)
     owner = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     is_sold = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=func.now())
     
 class Chat(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -40,7 +40,7 @@
             </ul>
         {% endif %}
         
-        {{ form.price(value=0) }}
+        {{ form.price }}
         {% if form.price.errors %}
             <ul>
                 {% for err in form.price.errors %}
