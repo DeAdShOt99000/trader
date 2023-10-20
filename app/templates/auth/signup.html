@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form action="" method="post">
+    <!-- <label for="firstname">First name:</label>
+    <input type="text" name="firstname" id="firstname">
+    <label for="lastname">Last name:</label>
+    <input type="text" name="lastname" id="lastname">
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username">
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email">
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password">
+    <label for="r-password">Re-enter Password:</label>
+    <input type="password" name="r-password" id="r-password">
+    <input type="submit" value="Sign Up"> -->
+    {{ form.csrf_token }}
+    
+    {{ form.firstname(placeholder="First name...") }}
+    {% if form.firstname.errors %}
+        <ul>
+            {% for err in form.firstname.errors %}
+            <li>{{ err }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {{ form.lastname(placeholder="Last name...") }}
+    {% if form.lastname.errors %}
+        <ul>
+            {% for err in form.lastname.errors %}
+            <li>{{ err }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {{ form.username(placeholder="Username...") }}
+    {% if form.username.errors %}
+        <ul>
+            {% for err in form.username.errors %}
+            <li>{{ err }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+    {{ form.email(placeholder="Email...") }}
+    {% if form.email.errors %}
+        <ul>
+            {% for err in form.email.errors %}
+            <li>{{ err }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {{ form.password(placeholder="Password...") }}
+    {% if form.password.errors %}
+        <ul>
+            {% for err in form.password.errors %}
+            <li>{{ err }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {{ form.r_password(placeholder="Re-enter password...") }}
+    {% if form.r_password.errors %}
+        <ul>
+            {% for err in form.r_password.errors %}
+            <li>{{ err }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {{ form.submit() }}
+</form>
+{% endblock %}

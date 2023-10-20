@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="" method="post">
+        {{ form.csrf_token }}
+
+        {{ form.username_email(placeholder="Username or Email...") }}
+        {% if form.username_email.errors %}
+            <ul>
+                {% for err in form.username_email.errors %}
+                <li>{{ err }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+        {{ form.password(placeholder="Password...") }}
+        {% if form.password.errors %}
+            <ul>
+                {% for err in form.password.errors %}
+                <li>{{ err }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+        {{ form.submit() }}
+    </form>
+{% endblock %}
