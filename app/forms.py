@@ -1,8 +1,8 @@
 from string import punctuation, ascii_lowercase, ascii_uppercase, digits
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, EmailField, SubmitField
-from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError
+from wtforms import StringField, PasswordField, EmailField, SubmitField, FileField, TextAreaField, SelectField, DecimalField
+from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError, NumberRange
 
 from app.models import User
 
@@ -29,7 +29,12 @@ def validate_email(form, field):
     if user:
         raise ValidationError("Email already exists")
         
-
+def validate_extension(form, field):
+    allowed_extensions = ["png", "jpg", "jpeg", "gif"]
+    ext = field.data.filename.split(".")[1]
+    if ext not in allowed_extensions:
+        raise ValidationError("File type not allowed")
+    
 class SignUp(FlaskForm):
     firstname = StringField("First name", validators=[DataRequired(), Length(min=1, max=50, message="Name must be between 1 and 50 characters long")])
     lastname = StringField("Last name", validators=[DataRequired(), Length(min=1, max=50, message="Name must be between 1 and 50 characters long")])
@@ -43,3 +48,12 @@ class LogIn(FlaskForm):
     username_email = StringField("Username or Email", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField()
+    
+class Sell(FlaskForm):
+    picture = FileField("Upload picture", validators=[DataRequired(), validate_extension])
+    title = StringField("Title", validators=[DataRequired()])
+    description = TextAreaField("Description", validators=[DataRequired()])
+    location = SelectField("Location", choices=[(1, "Maadi"), (2, "6 October"), (3, "Haram"), (4, "Faisal"), (5, "Madenti")])
+    price = DecimalField("Price", validators=[NumberRange(min=0, message="The minimum price is 0 EGP")])
+    submit = SubmitField()
+    

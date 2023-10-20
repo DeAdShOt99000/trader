@@ -14,8 +14,8 @@ class User(db.Model, UserMixin):
     sent_chat = db.relationship('Chat', backref='sent_by_set', lazy=True, foreign_keys='Chat.sent_by')
     received_chat = db.relationship('Chat', backref='received_by_set', lazy=True, foreign_keys='Chat.received_by')
     
-    items = db.relationship('Item', backref='owner', lazy=True)
-    favourites = db.relationship('Favourite', backref='owner', lazy=True)
+    items = db.relationship('Item', backref='item_owner', lazy=True)
+    favourites = db.relationship('Favourite', backref='favourite_owner', lazy=True)
         
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
