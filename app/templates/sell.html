@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="" enctype="multipart/form-data" method="POST">
+        {{ form.csrf_token }}
+
+        {{ form.picture }}
+        {% if form.picture.errors %}
+            <ul>
+                {% for err in form.picture.errors %}
+                <li>{{ err }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {{ form.title }}
+        {% if form.title.errors %}
+            <ul>
+                {% for err in form.title.errors %}
+                <li>{{ err }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {{ form.description }}
+        {% if form.description.errors %}
+            <ul>
+                {% for err in form.description.errors %}
+                <li>{{ err }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {{ form.location }}
+        {% if form.location.errors %}
+            <ul>
+                {% for err in form.location.errors %}
+                <li>{{ err }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+        {{ form.price(value=0) }}
+        {% if form.price.errors %}
+            <ul>
+                {% for err in form.price.errors %}
+                <li>{{ err }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {{ form.submit() }}
+    </form>
+{% endblock %}
