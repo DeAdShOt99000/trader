@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{{ current_user.firstname }}
+
+{% for item in items %}
+    <img src="{{ url_for('serve_image', img_id=item.images[0].id) }}" alt="" width="300px">
+    {{ item.title }}
+    {{ item.description }}
+    {{ item.price }}
+    {{ item.location }}
+    {{ item.created_at }}
+{% endfor %}
 {% endblock %}

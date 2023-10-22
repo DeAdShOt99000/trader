@@ -1,7 +1,9 @@
+from io import BytesIO
+
 from sqlalchemy.sql import func
 from flask_login import UserMixin
 
-from . import db
+from . import db, default_image
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -21,12 +23,18 @@ class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    picture = db.Column(db.LargeBinary)
     location = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, default=0, nullable=False)
     owner = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     is_sold = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=func.now())
+    
+    images = db.relationship('Image', backref='images_set', lazy=True)
+    
+class Image(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    image = db.Column(db.LargeBinary, default=BytesIO(default_image).read())
+    item_id = db.Column(db.Integer, db.ForeignKey("item.id"), nullable=False)
     
 class Chat(db.Model):
     id = db.Column(db.Integer, primary_key=True)

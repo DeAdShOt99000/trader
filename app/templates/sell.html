@@ -4,10 +4,10 @@
     <form action="" enctype="multipart/form-data" method="POST">
         {{ form.csrf_token }}
 
-        {{ form.picture }}
-        {% if form.picture.errors %}
+        {{ form.image }}
+        {% if form.image.errors %}
             <ul>
-                {% for err in form.picture.errors %}
+                {% for err in form.image.errors %}
                 <li>{{ err }}</li>
                 {% endfor %}
             </ul>

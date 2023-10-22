@@ -1,34 +1,57 @@
-from flask import render_template, request, redirect, url_for
-from flask_login import current_user, login_required
-from app import app, db, login_manager
+from io import BytesIO
 
-from app.models import User, Item
+from flask import render_template, request, redirect, url_for, send_file
+from flask_login import current_user, login_required
+
+from app import app, db, login_manager
+from app.models import User, Item, Image
 from app.forms import Sell
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+#--------------#
+
+@app.get("/image/<int:img_id>")
+def serve_image(img_id):
+    image = Image.query.get(img_id)
+    if image:
+        return send_file(BytesIO(image.image), mimetype='image/jpeg')
+
 @app.get("/")
 def index():
-    return render_template("index.html")
+    items = Item.query.all()
+    return render_template("index.html", items=items)
 
 @app.route("/sell", methods=("GET", "POST"))
 @login_required
 def sell():
     form = Sell()
-    form.location.data = "1"
+    form.location.data = "Maadi"
     
     if form.validate_on_submit():
         item = Item(
             title=form.title.data,
             description=form.description.data,
-            picture=form.picture.data.read(),
             location=form.location.data,
             price=form.price.data,
             owner=current_user.id
         )
+        
         db.session.add(item)
+        db.session.commit()
+        
+        image = Image(
+            item_id=item.id
+        )
+        
+        image_data = form.image.data.read()
+        
+        if len(image_data):
+            image.image = image_data
+        
+        db.session.add(image)
         db.session.commit()
         return redirect(url_for("index"))
         

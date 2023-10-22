@@ -23,4 +23,7 @@ bcrypt = Bcrypt(app)
 login_manager.login_view = "login"
 migrate = Migrate(app, db)
 
+with open(os.path.join(basedir, "static\\default_image.jpg"), "rb") as di:
+    default_image = di.read()
+
 from app import routes, auth
