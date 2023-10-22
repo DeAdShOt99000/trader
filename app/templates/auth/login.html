@@ -1,27 +1,50 @@
 {% extends 'base.html' %}
 
-{% block content %}
-    <form action="" method="post">
-        {{ form.csrf_token }}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth/login-signup.css') }}">
+{% endblock %}
 
-        {{ form.username_email(placeholder="Username or Email...") }}
-        {% if form.username_email.errors %}
+{% block nav %}
+    <header class="app-name-cont">
+        <a href="/" class="app-name">Trader</a>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <form class="center-form" action="" method="post">
+        {{ form.csrf_token }}
+        <fieldset>
+            {% for message in get_flashed_messages() %}
+                <span class="red-warning incorrect-cred">{{ message }}</span>
+            {% endfor %}
+            <header>- Log in -</header>
             <ul>
-                {% for err in form.username_email.errors %}
-                <li>{{ err }}</li>
-                {% endfor %}
+                <li>
+                    {{ form.username_email(placeholder="Username or Email...") }}
+                    {% if form.username_email.errors %}
+                        <ul>
+                            {% for err in form.username_email.errors %}
+                            <li class="red-warning invalid">{{ err }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+                <li>
+                    {{ form.password(placeholder="Password...") }}
+                    {% if form.password.errors %}
+                        <ul>
+                            {% for err in form.password.errors %}
+                            <li class="red-warning invalid">{{ err }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+                <li>
+                    {{ form.submit() }}
+                </li>
             </ul>
-        {% endif %}
-        
-        {{ form.password(placeholder="Password...") }}
-        {% if form.password.errors %}
-            <ul>
-                {% for err in form.password.errors %}
-                <li>{{ err }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        
-        {{ form.submit() }}
+            
+        </fieldset>
+        <h4 class="signup-login-switch">Don't have an account? <a href="{{ url_for('signup') }}{% if next %}?next={{ next }}{% endif %}">Sign Up!</a></h4>
     </form>
 {% endblock %}

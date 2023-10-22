@@ -1,76 +1,105 @@
 {% extends 'base.html' %}
 
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth/login-signup.css') }}">
+    <script src="{{ url_for('static', filename='js/auth/signup.js') }}" defer></script>
+{% endblock %}
+
+{% block nav %}
+    <header class="app-name-cont">
+        <a href="/" class="app-name">Trader</a>
+    </header>
+{% endblock %}
+
 {% block content %}
-<form action="" method="post">
-    <!-- <label for="firstname">First name:</label>
-    <input type="text" name="firstname" id="firstname">
-    <label for="lastname">Last name:</label>
-    <input type="text" name="lastname" id="lastname">
-    <label for="username">Username:</label>
-    <input type="text" name="username" id="username">
-    <label for="email">Email:</label>
-    <input type="email" name="email" id="email">
-    <label for="password">Password:</label>
-    <input type="password" name="password" id="password">
-    <label for="r-password">Re-enter Password:</label>
-    <input type="password" name="r-password" id="r-password">
-    <input type="submit" value="Sign Up"> -->
+<form class="center-form" action="" method="post">
     {{ form.csrf_token }}
-    
-    {{ form.firstname(placeholder="First name...") }}
-    {% if form.firstname.errors %}
+    <fieldset>
+        <header>- Sign Up! -</header>
         <ul>
-            {% for err in form.firstname.errors %}
-            <li>{{ err }}</li>
-            {% endfor %}
+            <li>
+                {{ form.firstname(id="firstName", placeholder="First name...") }}
+                {% if form.firstname.errors %}
+                    <ul>
+                        {% for err in form.firstname.errors %}
+                        <li class="red-warning invalid">{{ err }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+            <li>
+                {{ form.lastname(id="lastName", placeholder="Last name...") }}
+                {% if form.lastname.errors %}
+                    <ul>
+                        {% for err in form.lastname.errors %}
+                        <li class="red-warning invalid">{{ err }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+            <li class="username-container">
+                {{ form.username(id="username", placeholder="Username...") }}
+                {% if form.username.errors %}
+                    <ul>
+                        {% for err in form.username.errors %}
+                        <li class="red-warning invalid"><li>{{ err }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <div class="check-username-div">
+                    <img src="{{ url_for('static', filename='img/spinner.gif') }}" alt="loading...">
+                    <span></span>
+                </div>
+            </li>
+            <li class="email-container">
+                {{ form.email(id="email", placeholder="Email...") }}
+                {% if form.email.errors %}
+                    <ul>
+                        {% for err in form.email.errors %}
+                        <li class="red-warning invalid">{{ err }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <span class="email-check"></span>
+            </li>
+            <li>
+                {{ form.password(id="password", placeholder="Password...") }}
+                {% if form.password.errors %}
+                    <ul>
+                        {% for err in form.password.errors %}
+                        <li class="red-warning invalid">{{ err }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <ul class="password-criteria">
+                    <li id="lc" class="failed">Lowercase letters</li>
+                    <li id="uc" class="failed">Uppercase letters</li>
+                    <li id="n" class="failed">Numbers</li>
+                    <li id="s" class="failed">At least 1 symbol</li>
+                    <li id="ws" class="passed">No whitespace</li>
+                    <li id="len" class="failed">8 characters or more</li>
+                </ul>
+            </li>
+            <li>
+                {{ form.r_password(id="r-password", placeholder="Re-enter password...") }}
+                {% if form.r_password.errors %}
+                    <ul>
+                        {% for err in form.r_password.errors %}
+                        <li class="red-warning invalid">{{ err }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <span style="display: none;" class="not-matching">Password doesn't match</span>
+            </li>
+            <li>
+                {{ form.submit() }}
+            </li>
         </ul>
-    {% endif %}
-
-    {{ form.lastname(placeholder="Last name...") }}
-    {% if form.lastname.errors %}
-        <ul>
-            {% for err in form.lastname.errors %}
-            <li>{{ err }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    {{ form.username(placeholder="Username...") }}
-    {% if form.username.errors %}
-        <ul>
-            {% for err in form.username.errors %}
-            <li>{{ err }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    
-    {{ form.email(placeholder="Email...") }}
-    {% if form.email.errors %}
-        <ul>
-            {% for err in form.email.errors %}
-            <li>{{ err }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    {{ form.password(placeholder="Password...") }}
-    {% if form.password.errors %}
-        <ul>
-            {% for err in form.password.errors %}
-            <li>{{ err }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    {{ form.r_password(placeholder="Re-enter password...") }}
-    {% if form.r_password.errors %}
-        <ul>
-            {% for err in form.r_password.errors %}
-            <li>{{ err }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
-    {{ form.submit() }}
+    </fieldset>
+    <h4 class="signup-login-switch">Already have an account? <a href="{{ url_for('login') }}{% if next %}?next={{ next }}{% endif %}">Log in!</a></h4>
 </form>
+<script>
+    window.csrf = '{{ form.csrf_token._value() }}'
+    window.checkUserEmail = "{{ url_for('check_user_email') }}"
+</script>
 {% endblock %}

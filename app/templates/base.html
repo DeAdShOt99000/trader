@@ -4,19 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Trader{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% block head %}
+    {% endblock %}
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="/">Trader</a>
-            <input type="search" id="search" placeholder="Search...">
-            <a href="">Location</a>
-            <a href="{{ url_for('sell') }}">Sell</a>
-            <a href="{{ url_for('login') }}">Log in</a>
-            <a href="{{ url_for('signup') }}">Sign up</a>
-            <a href="{{ url_for('logout') }}">Log out</a>
-        </nav>
-    </header>
+    {% block nav %}
+        <header>
+            <nav>
+                <a href="/" class="app-name">Trader</a>
+                <input type="search" class="search" placeholder="Search...">
+                <a href="" class="nav-link">Location</a>
+                <a href="{{ url_for('sell') }}" class="nav-link">Sell</a>
+                <a href="{{ url_for('login') }}" class="nav-link">Log in</a>
+                <a href="{{ url_for('signup') }}" class="nav-link">Sign up</a>
+                <a href="{{ url_for('logout') }}" class="nav-link">Log out</a>
+            </nav>
+        </header>
+    {% endblock %}
     {% block content %}
     {% endblock %}
 </body>

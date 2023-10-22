@@ -17,7 +17,7 @@ def validate_password_chars(form, field):
                 break
     
     if is_four < 4:
-        raise ValidationError("Password doesn't meet requirements")
+        raise ValidationError("Password does not meet requirements")
     
 def validate_username(form, field):
     user = User.query.filter_by(username=field.data).first()
