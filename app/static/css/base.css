@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Amita&family=Cookie&family=Lobster&family=Pacifico&family=Rampart+One&family=Varela+Round&display=swap');
+
+* {
+    font-family: 'Varela Round', serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-size: bolder;
+}
+
+body {
+    background-color: #B1DDF1;
+    color: white;
+}
+
+
+.app-name {
+    font-family: Cookie;
+    font-weight: bolder;
+    font-size: 2rem;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    color: #064789;
+    text-shadow: 3px 3px #EBF2FA;
+    transition: all 0.3s;
+}
+
+.app-name:hover {
+    transform: scale(104%);
+}
+
+nav {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #7eccf0;
+}
+
+.nav-link {
+    color: white;
+    letter-spacing: 1px;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+    color: #064789;
+    transition: color .2s ease-out;
+}
+
+.search {
+    border-radius: 10px;
+    padding: 5px;
+    height: 1.7rem;
+    border: 3px solid #064789;
+    background-color: #7eccf0;
+    opacity: 0.6;
+}
+
+.search::placeholder {
+    color: white;
+    text-shadow: 1px 1px #064789;
+}
+
+.search:hover {
+    opacity: 1;
+}

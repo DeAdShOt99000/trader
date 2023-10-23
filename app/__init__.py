@@ -24,46 +24,33 @@ bcrypt = Bcrypt(app)
 login_manager.login_view = "login"
 migrate = Migrate(app, db)
 
-def price_format(text):
-    text = str(text)
-    integer, decimal = text.split('.')[0], text.split('.')[1] if len(text.split('.')[1]) > 1 else text.split('.')[1] + '0'
-    counter = 0
-    new_txt = ''
-    for x in range(-1, -len(integer)-1, -1):
-        if counter >= 3:
-            counter = 0
-            new_txt = ',' + new_txt
-        new_txt = integer[x] + new_txt
-        counter+=1
-    return f'{new_txt}.{decimal}'
+def price_format(float):
+    return '{:,.2f}'.format(float)
 
-intervals = ["Just now", "Few minutes ago", "An hour ago", "Few hours ago", "Today", "Yesterday"]
-
-def pretty_date(date):
-    return date.strftime("%d %b, %Y")
-
-def date_time_format(dateT):
-    current_time = datetime.now()
-    time_difference = current_time - dateT
-    print(dateT, current_time + timedelta(minutes=5))
-    print(time_difference)
-    if time_difference < timedelta(minutes=1.5):
-        return intervals[0]
-    elif time_difference < timedelta(minutes=40):
-        return intervals[1]
-    elif time_difference < timedelta(hours=1.5):
-        return intervals[2]
-    elif time_difference < timedelta(hours=12):
-        return intervals[3]
-    elif time_difference < timedelta(days=0.9):
-        return intervals[4]
+def date_format(dateT):
+    time_difference = datetime.now() - dateT
+    
+    if time_difference < timedelta(minutes=3):
+        return "Just now"
+    elif time_difference < timedelta(minutes=30):
+        return "Few minutes ago"
+    elif time_difference < timedelta(hours=1):
+        return "Less than an hour ago"
+    elif time_difference < timedelta(hours=1.1):
+        return "An hour ago"
+    elif time_difference < timedelta(hours=1.9):
+        return "More than an hour ago"
+    elif time_difference < timedelta(hours=6):
+        return "Few hours ago"
+    elif time_difference < timedelta(days=1):
+        return "Today"
     elif time_difference < timedelta(days=2):
-        return intervals[5]
+        return "Yesterday"
     else:
-        return "From a while"
+        return dateT.strftime("%d %b, %Y")
     
 app.jinja_env.globals.update(price_format=price_format)
-app.jinja_env.globals.update(date_time_format=date_time_format)
+app.jinja_env.globals.update(date_format=date_format)
     
 
 with open(os.path.join(basedir, "static\\img\\default_image.jpg"), "rb") as di:

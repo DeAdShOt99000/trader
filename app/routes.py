@@ -1,4 +1,5 @@
 from io import BytesIO
+from datetime import datetime
 
 from flask import render_template, request, redirect, url_for, send_file
 from flask_login import current_user, login_required
@@ -36,7 +37,8 @@ def sell():
             description=form.description.data,
             location=form.location.data,
             price=form.price.data,
-            owner=current_user.id
+            owner=current_user.id,
+            created_at=datetime.now()
         )
         
         db.session.add(item)
@@ -56,3 +58,8 @@ def sell():
         return redirect(url_for("index"))
         
     return render_template("sell.html", form=form)
+
+@app.get("/<int:item_id>/")
+def single_item(item_id):
+    item = Item.query.get(item_id)
+    return render_template("single-item.html", item=item)

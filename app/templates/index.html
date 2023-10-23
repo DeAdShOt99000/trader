@@ -9,18 +9,29 @@
 <div class="items-cont">
     
     {% for item in items %}
-    <div class="item">
+    <a class="item" href="{{ url_for('single_item', item_id=item.id) }}">
         <div class="img-cont">
+            <img src="{{ url_for('serve_image', img_id=item.images[0].id) }}" alt="">
         </div>
         <div class="upper">
             <div>{{ item.title }}</div>
-            <div>{{ price_format(item.price) }} EGP</div>
+            <div>{{ price_format(item.price) }} <span class="egp">EGP</span></div>
         </div>
         <div class="lower">
-            <div>{{ item.location }}</div>
-            <div>{{ date_time_format(item.created_at) }}</div>
+            <div>
+                <svg
+                    width="18px"
+                    height="18px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="#fff"
+                >
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 4.25 7 13 7 13s7-8.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                </svg> {{ item.location }}
+            </div>
+            <div>{{ date_format(item.created_at) }}</div>
         </div>
-    </div>
+    </a>
     {% endfor %}
 </div>
 {% endblock %}
