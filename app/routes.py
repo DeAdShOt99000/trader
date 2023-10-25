@@ -5,7 +5,7 @@ from flask import render_template, request, redirect, url_for, send_file, abort
 from flask_login import current_user, login_required
 
 from app import app, db, login_manager
-from app.models import User, Item, Image, Chat
+from app.models import User, Item, Image, Chat, Favourite
 from app.forms import Sell
 
 @login_manager.user_loader
@@ -103,7 +103,12 @@ def single_item(item_id):
     
     if not item:
         abort(404)
-    return render_template("single-item.html", items=items, item=item, seller=seller)
+    
+    if current_user.is_authenticated:
+        is_favourite = list(filter(lambda x: x.item_id == item_id and x.owner == current_user.id, item.favourites))
+    else:
+        is_favourite = False
+    return render_template("single-item.html", items=items, item=item, seller=seller, is_favourite=bool(is_favourite))
 
 @app.get("/chats")
 def chats():
@@ -259,3 +264,20 @@ def tag_as_viewed():
         db.session.add(chat)
         db.session.commit()
     return {'message': 'success!'}
+
+@app.get("/chat/favourite-json/<int:item_id>")
+def favourite_json(item_id):    
+    favourite = Favourite.query.filter_by(item_id=item_id, owner=current_user.id).first()
+    
+    if favourite:
+        db.session.delete(favourite)
+        new_status = False
+    else:
+        new_favourite = Favourite(
+            owner=current_user.id,
+            item_id=item_id
+        )
+        db.session.add(new_favourite)
+        new_status = True
+    db.session.commit()
+    return {'message': 'success', 'favourite': new_status}

@@ -17,12 +17,12 @@
         {% else %}
         <button class="chat-btn" onclick="goToChat()">Chat</button>
         {% endif %}
-        <button class="favourite-btn">
+        <button class="favourite-btn" onclick="toggleFavourite()">
             <svg
             width="25"
             height="25"
             xmlns="http://www.w3.org/2000/svg"
-            fill="#064789"
+            fill="{% if is_favourite %}red{% else %}#064789{% endif %}"
             viewBox="0 0 24 24"
             >
             <path
@@ -71,5 +71,22 @@
     function goToChat(){
         window.location.href = "{{ url_for('single_chat', user_id=seller.id) }}?item-id={{ item.id }}"
     }
+
+    const favouriteIcon = document.querySelector(".favourite-btn svg")
+    
+    function toggleFavourite(){
+        if ('{{ current_user.is_authenticated }}' != 'False'){
+            fetch(`{{ url_for('favourite_json', item_id=item.id) }}`)
+            .then(response => response.json())
+            .then(data => {
+                fav_value = data.favourite ? 'red' :'#064789';
+                favouriteIcon.setAttribute("fill", fav_value)
+            })
+
+        } else {
+            window.location.href = "{{ url_for('login') }}?next=/{{ item.id }}/";
+        } 
+    };
+
 </script>
 {% endblock %}

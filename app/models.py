@@ -42,7 +42,7 @@ class Item(db.Model):
     
     images = db.relationship('Image', backref='images_set', lazy=True)
     chats = db.relationship('Chat', backref='chats_set', lazy=True)
-    favourites = db.relationship('Favourite', backref='favourite_item', lazy=True)
+    favourites = db.relationship('Favourite', backref='favourite_items', lazy=True)
     
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
