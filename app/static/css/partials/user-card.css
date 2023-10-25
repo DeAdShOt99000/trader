@@ -1,0 +1,20 @@
+.user-logo-cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #7eccf0;
+    width: 35px;
+    height: 35px;
+    border: 3px solid white;
+    border-radius: 50%;
+    text-shadow: 1px 1px white;
+    grid-row: span 2;
+}
+
+.user-logo {
+    font-family: Amita;
+}
+
+.username {
+    color: gray;
+}

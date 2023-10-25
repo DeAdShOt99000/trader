@@ -28,7 +28,8 @@ def price_format(float):
     return '{:,.2f}'.format(float)
 
 def date_format(dateT):
-    time_difference = datetime.now() - dateT
+    now = datetime.now()
+    time_difference = now - dateT
     
     if time_difference < timedelta(minutes=3):
         return "Just now"
@@ -42,9 +43,9 @@ def date_format(dateT):
         return "More than an hour ago"
     elif time_difference < timedelta(hours=6):
         return "Few hours ago"
-    elif time_difference < timedelta(days=1):
+    elif dateT.date() == datetime.now().date():
         return "Today"
-    elif time_difference < timedelta(days=2):
+    elif dateT.date() == datetime.now().date() - timedelta(days=1):
         return "Yesterday"
     else:
         return dateT.strftime("%d %b, %Y")

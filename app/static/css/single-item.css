@@ -1,25 +1,28 @@
-.item-cont {
-    display: flex;
-    color: black;
-    height: 55vh;
-}
 
 .grid-cont {
     width: 100%;
     display: grid;
     grid-template-columns: 25% auto 1fr auto;
-    grid-template-rows: 1fr 30px;
+    grid-template-rows: 45px 1fr 30px 1fr;
     gap: 5px;
+    height: 91vh;
+    width: 99vw;
+    margin: 0 10px;
+    color: black;
 }
 
-.img-cont {
+.item-img-cont {
     position: relative;
-    grid-column: span 2;
     background-color: black; 
     overflow: hidden;
+    margin: 5px;
+    border: 3px solid #064789;
+    border-radius: 5px;
+    grid-column: span 2;
+    grid-row: span 2;
 }
 
-.img-cont img {
+.item-img-cont img {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -41,10 +44,23 @@ button:hover {
     opacity: 1;
 }
 
-.chat-btn {
+.seller-btns {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.chat-btn, .seller-btns {
     grid-column-start: 1;
+    margin-left: 5px;
+}
+
+.chat-btn, .seller-btns button {
     border-radius: 13px;
     font-weight: bolder;
+}
+
+.seller-btns button {
+    width: 47%;
 }
 
 .favourite-btn {
@@ -63,7 +79,17 @@ button:hover {
     grid-column-start: 3;
     grid-column-end: 5;
     grid-row-start: 1;
-    margin: 10px;
+    /* margin: 10px; */
+}
+
+.title-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    grid-row: 1;
+    grid-column: 3 / 5;
+    margin-top: 10px;
 }
 
 .item-title {
@@ -85,9 +111,29 @@ button:hover {
     color: #064789;
     overflow: auto;
     background-color: #7eccf065;
-    height: 235px;
+    /* height: 235px; */
     border-radius: 20px;
-    padding: 5px;
+    padding: 10px;
+    grid-row: 2;
+    grid-column: 3 / 5;
+}
+
+.description-cont::-webkit-scrollbar {
+    width: 10px;
+}
+
+.description-cont::-webkit-scrollbar-thumb {
+    background-color: #888888b4;
+    border-radius: 10px;
+}
+
+.description-cont::-webkit-scrollbar-thumb:hover {
+    background-color: #888;
+
+}
+  
+.description-cont::-webkit-scrollbar-track {
+    background-color: transparent;
 }
 
 .description-cont div {
@@ -99,7 +145,7 @@ button:hover {
 
 .location-cont {
     grid-column-start: 3;
-    grid-row-start: 2;
+    grid-row-start: 3;
 }
 
 .location-cont svg {
@@ -110,5 +156,48 @@ button:hover {
 
 .item-created-at {
     grid-column-start: -2;
-    grid-row-start: 2;
+    grid-row-start: 3;
+    margin-right: 10px;
+}
+
+.other-items-cont {
+    grid-column: span 5;
+}
+
+.other-items-cont .title {
+    font-weight: bolder;
+    padding: 10px;
+}
+
+.other-items {
+    display: flex;
+    gap: 10px;
+    overflow: auto;
+    padding-bottom: 5px;
+    height: 83%;
+    width: 100%;
+}
+
+.other-items::-webkit-scrollbar {
+    height: 10px;
+}
+
+.other-items::-webkit-scrollbar-thumb {
+    background-color: #888888b4;
+    border-radius: 10px;
+}
+
+.other-items::-webkit-scrollbar-thumb:hover {
+    background-color: #888;
+
+}
+  
+.other-items::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.item {
+    flex-shrink: 0;
+    width: 330px;
+    height: 200px;
 }

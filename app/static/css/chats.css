@@ -1,0 +1,162 @@
+body {
+    color: black;
+}
+
+.spinner {
+    display: block;
+    width: 90px;
+    margin: auto;
+}
+
+.chatter-flex {
+    cursor: pointer;
+    position: relative;
+    z-index: 4;
+    font-family: Amita;
+    font-size: 2rem;
+    color: #064789;
+    text-shadow: 2px 2px white;
+    padding: 0;
+    height: 45px;
+    overflow: hidden;
+    bottom: 8px;
+}
+
+.text-bar {
+    border-radius: 10px;
+    padding: 5px;
+    height: 1.7rem;
+    border: 3px solid #064789;
+    background-color: #7eccf0;
+    opacity: 0.6;
+}
+
+.text-bar::placeholder {
+    color: white;
+    text-shadow: 1px 1px #064789;
+}
+
+.text-bar:hover {
+    opacity: 1;
+}
+
+#search-flex {
+    width: 50%;
+}
+
+.user {
+    height: 100%;
+    padding: 5px;
+}
+
+.user:hover {
+    color: white;
+    background-color: #7eccf0;
+}
+
+.user span {
+    font-size: 1.5rem;
+}
+
+.chat-title {
+    padding: 10px;
+}
+
+.friend-chat-cont {
+    display: grid;
+    column-gap: 7px;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: 1fr 1fr;
+    /* width: fit-content; */
+}
+
+.friend-chat-cont .friend-logo-cont {
+    grid-row: 1 / span 2;
+}
+
+.friend-logo-cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #7eccf0;
+    width: 45px;
+    height: 45px;
+    border: 3px solid white;
+    border-radius: 50%;
+    text-shadow: 1px 1px white;
+}
+
+.each-chat:hover .friend-logo-cont {
+    outline: 1.5px solid black;
+    color: white;
+    text-shadow: 1px 1px black;
+}
+
+.friend-logo {
+    font-family: Amita;
+}
+
+.inputs-cont {
+    position: relative;
+    width: 70%;
+}
+
+.adding-text-bar{
+    position: relative;
+    width: 100%;
+    background-color: #8db530;
+}
+
+.friend-chat {
+    font-size: 1.5rem;
+    color:black;
+    text-shadow: 1px 1px 2px #7eccf0a8;
+}
+
+.each-chat:hover .friend-chat {
+    text-shadow: 1px 1px white;
+}
+
+.friend-user {
+    color: gray;
+}
+
+.each-chat:hover .friend-user {
+    color: #064789;
+}
+
+.each-chat{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 6px;
+    position: relative;
+}
+
+.each-chat:hover {
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #7eccf06b;
+}
+
+.msg-circle {
+    position: absolute;
+    display: block;
+    top: 55%;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bolder;
+    text-align: center;
+    font-size: 0.6rem;
+    background-color: #064789;
+    color: white;
+    border-radius: 50%;
+    width: 17px;
+    height: 17px;
+    padding: 3px;
+    display: none;
+}
+
+#no-friends {
+    position: absolute;
+    z-index: -1;
+    padding: 5px;
+}

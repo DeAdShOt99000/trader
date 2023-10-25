@@ -1,16 +1,22 @@
 {% extends 'base.html' %}
 
 {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/partials/item.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/single-item.css') }}">
 {% endblock %}
-
 {% block content %}
-<div class="item-cont">
     <div class="grid-cont">
-        <div class="img-cont">
+        <div class="item-img-cont">
             <img src="{{ url_for('serve_image', img_id=item.images[0].id) }}" alt="item-image">
         </div>
-        <button class="chat-btn">Chat</button>
+        {% if current_user.id == seller.id %}
+        <div class="seller-btns">
+            <button class="edit-btn" onclick="">Edit</button>
+            <button class="delete-btn" onclick="">Delete</button>
+        </div>
+        {% else %}
+        <button class="chat-btn" onclick="goToChat()">Chat</button>
+        {% endif %}
         <button class="favourite-btn">
             <svg
             width="25"
@@ -25,15 +31,15 @@
             </svg>
         </button>
 
-        <div class="content-cont">
+        <div class="title-price">
             <h2 class="item-title">{{ item.title }}</h2>
-            
             <div class="price-cont">{{ price_format(item.price) }} <span class="egp">EGP</span></div>
-            <div class="description-cont">
-                <div>Description:</div>
-                {{ item.description }}
-            </div>
-    
+        </div>
+        <div class="description-cont">
+            <div>Description:</div>
+            {{ item.description }}
+            <div>Seller:</div>
+            {{ seller.firstname }} {{ seller.lastname }}
         </div>
 
         <div class="location-cont">
@@ -49,6 +55,21 @@
         </div>
 
         <div class="item-created-at">{{ date_format(item.created_at) }}</div>
+        
+        <div class="other-items-cont">
+            <div class="title">Other items:</div>
+            <div class="other-items">
+                <!--Other items-->
+                {% for item in items %}
+                    {% include 'partials/item.html' %}
+                {% endfor %}
+            </div>
+        </div>
     </div>
-</div>
+    
+<script>
+    function goToChat(){
+        window.location.href = "{{ url_for('single_chat', user_id=seller.id) }}?item-id={{ item.id }}"
+    }
+</script>
 {% endblock %}

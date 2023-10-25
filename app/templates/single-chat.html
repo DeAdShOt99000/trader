@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}{{ contact.firstname|title }}'s Chat{% endblock title %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/single-chat.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/partials/user-card.css') }}">
+    <script src="{{ url_for('static', filename='js/single-chat.js') }}" defer></script>
+{% endblock head %}
+
+{% block content %}
+<div class="all-container">
+    <div class="top-bar">
+        <a href="{{ url_for('chats') }}" id="all-contacts">&#8592; Back</a>
+        <div class="contact-card-cont">
+            {% with current_user=contact %}
+            {% include 'partials/user-card.html' %}
+            {% endwith %}
+        </div>
+    </div>
+    <div id="chat-box"></div>
+    <div class="bottom">
+        <input class="text-bar" type="text" name="text-message" id="text-message" placeholder="Type a message...">
+        <button id="send">&#10148;</button>
+        <div id="to-bottom-btn-container">
+            <div id="msg-circle">0</div>
+            <button id="to-bottom-btn">
+                &darr;
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.csrf = '{{ csrf_token() }}';
+    window.userId = '{{ current_user.id }}';
+    window.friendId = '{{ contact.id }}';
+    window.tagAsViewedLink = "{{ url_for('tag_as_viewed') }}";
+    window.chatJson = "{{ url_for('chat_json', user_id=contact.id) }}";
+    window.itemId = "{{ item_id }}" != "None" ? "{{ item_id }}": null;
+</script>
+
+{% endblock content %}
+    
+    

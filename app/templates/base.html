@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Trader{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/partials/user-card.css') }}">
     {% block head %}
     {% endblock %}
 </head>
@@ -12,13 +13,38 @@
     {% block nav %}
         <header>
             <nav>
-                <a href="/" class="app-name">Trader</a>
+                <a href="{{ url_for('index') }}" class="app-name">Trader</a>
+
                 <input type="search" class="search" placeholder="Search...">
-                <a href="" class="nav-link">Location</a>
-                <a href="{{ url_for('sell') }}" class="nav-link">Sell</a>
-                <a href="{{ url_for('login') }}" class="nav-link">Log in</a>
-                <a href="{{ url_for('signup') }}" class="nav-link">Sign up</a>
-                <a href="{{ url_for('logout') }}" class="nav-link">Log out</a>
+
+                <select name="location" class="location" class="">
+                    <option value="">Maadi</option>
+                    <option value="">6 October</option>
+                    <option value="">Faisal</option>
+                    <option value="">Madenti</option>
+                    <option value="">Haram</option>
+                </select>
+
+                <div class="all-links">
+                    <a href="{{ url_for('sell') }}" class="nav-link">Sell</a>
+                    <a href="{{ url_for('chats') }}" class="nav-link">Chats</a>
+                    <a href="" class="nav-link">My items</a>
+                    <a href="" class="nav-link">Favourites</a>
+                </div>
+
+                <div class="user-card-cont">
+                    {% if current_user.is_authenticated %}
+                        {% include 'partials/user-card.html' %}
+                        <a href="{{ url_for('logout') }}" class="logout">Log out</a>
+                    {% else %}
+                        <div class="guest">@Guest</div>
+                        <div class="login-signup">
+                            <a href="{{ url_for('login') }}" class="login">Log in</a>
+                            <a href="{{ url_for('signup') }}" class="signup">Sign up</a>
+                        </div>
+                    {% endif %}
+                </div>
+
             </nav>
         </header>
     {% endblock %}

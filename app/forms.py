@@ -55,7 +55,7 @@ class Sell(FlaskForm):
     image = FileField("Upload image", validators=[validate_extension])
     title = StringField("Title", validators=[DataRequired()])
     description = TextAreaField("Description", validators=[DataRequired()])
-    location = SelectField("Location", choices=[("Maadi", "Maadi"), ("6 October", "6 October"), ("Haram", "Haram"), ("Faisal", "Faisal"), ("Madenti", "Madenti")])
+    location = SelectField("Location", choices=[("Maadi", "Maadi"), ("6 October", "6 October"), ("Haram", "Haram"), ("Faisal", "Faisal"), ("Madenti", "Madenti")], default="Maadi")
     price = DecimalField("Price", validators=[NumberRange(min=0, message="The minimum price is 0 EGP")])
     submit = SubmitField()
     
