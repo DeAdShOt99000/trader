@@ -20,4 +20,10 @@
         </div>
         <div>{{ date_format(item.created_at) }}</div>
     </div>
+    {% if seller_page %}
+    <div class="edit-delete">
+        <button class="edit-btn">Edit</button>
+        <button class="delete-btn">Delete</button>
+    </div>
+    {% endif %}
 </a>

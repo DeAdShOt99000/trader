@@ -116,42 +116,6 @@ def chats():
 
 @app.get("/chats/chats-json")
 def chats_json():
-    # all_friends = current_user.contacts.all()
-    # chat_set = current_user.received_by_set.all()
-    # af_dict_lst = []
-    # if all_friends:
-    #     for friend in all_friends:
-    #         try:
-    #             last_msg_details = chat_set.filter(sent_by=friend).order_by('-sent_at')[0]
-    #             last_msg = (last_msg_details.text, timezone.localtime(last_msg_details.sent_at), last_msg_details.id)
-    #         except:
-    #             last_msg = ('', datetime(1, 1, 1), -1)
-            
-    #         try:
-    #             not_viewed = len(chat_set.filter(sent_by=friend, viewed=False))
-    #         except IndexError:
-    #             not_viewed = None
-            
-    #         friend_dict = vars(friend)
-    #         clean_friend_dict = {
-    #             'id': friend_dict['id'],
-    #             'username': friend_dict['username'],
-    #             'first_name': friend_dict['first_name'].title(),
-    #             'last_name': friend_dict['last_name'].title(),
-    #             'email': friend_dict['email'],
-    #             'not_viewed': not_viewed, # The number of unviewed messages
-    #             'last_msg': last_msg, # Last message's text, time and id
-    #             'user_color': users_colors[friend.first_name[0:1].lower()]
-    #         }
-    #         af_dict_lst.append(clean_friend_dict)
-
-    #     sorted_dict_lst = sorted(af_dict_lst, key=lambda x: x['last_msg'][1].date(), reverse=True)
-        
-    #     if sorted_dict_lst[0]['last_msg'][2] != int(request.GET.get('last-msg-id')):
-    #         return JsonResponse(sorted_dict_lst, safe=False)
-    #     return JsonResponse([{'last_msg': 'same'}], safe=False)
-    # return JsonResponse([], safe=False)
-    
     all_friends = current_user.contacts.all()
     chat_set = current_user.received_chat
     print(all_friends)
@@ -281,3 +245,16 @@ def favourite_json(item_id):
         new_status = True
     db.session.commit()
     return {'message': 'success', 'favourite': new_status}
+
+@app.get("/my-items")
+@login_required
+def my_items():
+    items = Item.query.filter_by(owner=current_user.id).all()
+    return render_template('my-items.html', items=items)
+
+@app.get("/favourites")
+@login_required
+def favourites():
+    fav_items = Item.query.filter_by(owner=current_user.id).all()[0]
+    print(current_user.favourites[0].item_id)
+    return render_template('favourites.html')

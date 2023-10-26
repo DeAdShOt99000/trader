@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/partials/item.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/my-items.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="items-cont">
+        {% for item in items %}
+            {% with seller_page=True %}
+            {% include 'partials/item.html' %}
+            {% endwith %}
+        {% endfor %}
+    </div>
+{% endblock %}
