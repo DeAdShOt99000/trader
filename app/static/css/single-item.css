@@ -121,6 +121,7 @@ button:hover {
 .item-title {
     font-size: 2rem;
     color: #064789;
+    text-shadow: 2px 2px white;
 }
 
 .price-cont {

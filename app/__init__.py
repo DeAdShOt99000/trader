@@ -27,26 +27,29 @@ migrate = Migrate(app, db)
 def price_format(float):
     return '{:,.2f}'.format(float)
 
-def date_format(dateT):
-    now = datetime.now()
-    time_difference = now - dateT
-    
-    if time_difference < timedelta(minutes=3):
-        return "Just now"
-    elif time_difference < timedelta(minutes=30):
-        return "Few minutes ago"
-    elif time_difference < timedelta(hours=1):
-        return "Less than an hour ago"
-    elif time_difference < timedelta(hours=1.1):
-        return "An hour ago"
-    elif time_difference < timedelta(hours=1.9):
-        return "More than an hour ago"
-    elif time_difference < timedelta(hours=6):
-        return "Few hours ago"
-    elif dateT.date() == datetime.now().date():
-        return "Today"
-    elif dateT.date() == datetime.now().date() - timedelta(days=1):
-        return "Yesterday"
+def date_format(dateT, force_datetime=False):
+    if not force_datetime:
+        now = datetime.now()
+        time_difference = now - dateT
+        
+        if time_difference < timedelta(minutes=3):
+            return "Just now"
+        elif time_difference < timedelta(minutes=30):
+            return "Few minutes ago"
+        elif time_difference < timedelta(hours=1):
+            return "Less than an hour ago"
+        elif time_difference < timedelta(hours=1.1):
+            return "An hour ago"
+        elif time_difference < timedelta(hours=1.9):
+            return "More than an hour ago"
+        elif time_difference < timedelta(hours=6):
+            return "Few hours ago"
+        elif dateT.date() == datetime.now().date():
+            return "Today"
+        elif dateT.date() == datetime.now().date() - timedelta(days=1):
+            return "Yesterday"
+        else:
+            return dateT.strftime("%d %b, %Y")
     else:
         return dateT.strftime("%d %b, %Y")
     

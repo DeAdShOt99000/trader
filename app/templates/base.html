@@ -6,23 +6,26 @@
     <title>{% block title %}Trader{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/partials/user-card.css') }}">
+    <script src="{{ url_for('static', filename='js/base.js') }}" defer></script>
     {% block head %}
     {% endblock %}
 </head>
 <body>
     {% block nav %}
         <header>
-            <nav>
+            <nav class="{% block nav_search %}{% endblock %}">
                 <a href="{{ url_for('index') }}" class="app-name">Trader</a>
 
-                <input type="search" class="search" placeholder="Search...">
+                {% block search %}
+                {% endblock %}
 
                 <select name="location" class="location" class="">
-                    <option value="">Maadi</option>
-                    <option value="">6 October</option>
-                    <option value="">Faisal</option>
-                    <option value="">Madenti</option>
-                    <option value="">Haram</option>
+                    <option class="all" value="">All</option>
+                    <option class="maadi" value="maadi">Maadi</option>
+                    <option class="october" value="october">6 October</option>
+                    <option class="faisal" value="faisal">Faisal</option>
+                    <option class="madenti" value="madenti">Madenti</option>
+                    <option class="haram" value="haram">Haram</option>
                 </select>
 
                 <div class="all-links">

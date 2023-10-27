@@ -3,9 +3,17 @@
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/partials/item.css') }}">
+    <script src="{{ url_for('static', filename='js/index.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/search.js') }}" defer></script>
+{% endblock %}
+
+{% block nav_search %}nav-search{% endblock %}
+{% block search %}
+    <input type="search" class="search" placeholder="Search...">
 {% endblock %}
 
 {% block content %}
+
 
 <div class="items-cont">
     {% for item in items %}

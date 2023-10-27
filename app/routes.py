@@ -5,8 +5,9 @@ from flask import render_template, request, redirect, url_for, send_file, abort
 from flask_login import current_user, login_required
 
 from app import app, db, login_manager
-from app.models import User, Item, Image, Chat
+from app.models import User, Item, Image, Chat, user_contacts
 from app.forms import Sell
+from sqlalchemy import or_
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -116,50 +117,52 @@ def chats():
 
 @app.get("/chats/chats-json")
 def chats_json():
-    all_friends = current_user.contacts.all()
+    # List of tuples showing all current user contacts ids
+    query_lst = db.session.query(user_contacts).filter(or_(user_contacts.c.contact_id == current_user.id, user_contacts.c.contacted_id == current_user.id)).all()
+    
+    # Converting the tuples list to integers list showing user contacts
+    contacts_lst = list(map(lambda x: x[0] if x[0] != current_user.id else x[1], query_lst))
+    
+    my_contacts = User.query.filter(User.id.in_(contacts_lst)).all()
     chat_set = current_user.received_chat
-    print(all_friends)
+    print(my_contacts)
     
     print([c.sent_by for c in chat_set])
     
-    friends_dict_lst = []
-    for friend in all_friends:
-        friend_chat = list(filter(lambda f: f.sent_by == friend.id, chat_set))
+    contacts_dict_lst = []
+    for contact in my_contacts:
+        contact_chat = list(filter(lambda c: c.sent_by == contact.id, chat_set))
         try:
-            last_msg_details = friend_chat[-1]
+            last_msg_details = contact_chat[-1]
             last_msg = (last_msg_details.text, last_msg_details.sent_at, last_msg_details.id)
         except:
             last_msg = ('', datetime(1, 1, 1), -1)
             
         try:
-            not_viewed = len(list(filter(lambda f: f.viewed == False, friend_chat)))
+            not_viewed = len(list(filter(lambda c: c.viewed == False, contact_chat)))
         except IndexError:
             not_viewed = None
             
-        clean_friend_dict = {
-            'id': friend.id,
-            'username': friend.username,
-            'firstname': friend.firstname.title(),
-            'lastname': friend.lastname.title(),
-            'email': friend.email,
+        clean_contact_dict = {
+            'id': contact.id,
+            'username': contact.username,
+            'firstname': contact.firstname.title(),
+            'lastname': contact.lastname.title(),
+            'email': contact.email,
             'not_viewed': not_viewed, # The number of unviewed messages
             'last_msg': last_msg, # Last message's text, time and id
-            'user_color': users_colors[friend.firstname[0:1].lower()]
+            'user_color': users_colors[contact.firstname[0:1].lower()]
         }
         
-        friends_dict_lst.append(clean_friend_dict)
-    sorted_lst = sorted(friends_dict_lst, key=lambda f: f['last_msg'][1].date(), reverse=True)
+        contacts_dict_lst.append(clean_contact_dict)
+    sorted_lst = sorted(contacts_dict_lst, key=lambda f: f['last_msg'][1].date(), reverse=True)
     
     if sorted_lst[0]['last_msg'][2] != int(request.args.get('last-msg-id')):
         return sorted_lst
     return {'last_msg': 'same'}
     
-    # print(all_friends[0].id)
-    # print(chat_set[0].sent_by)
-    
 @app.route("/chat/<int:user_id>", methods=('GET', 'POST'))
 def single_chat(user_id):
-    # contact = current_user.contacts.filter_by(id=user_id).first()
     contact = User.query.get_or_404(user_id)
     if not contact:
         abort(404)
@@ -180,7 +183,6 @@ def single_chat(user_id):
         
         if contact not in current_user.contacts.all():
             current_user.contacts.append(contact)
-            contact.contacts.append(current_user)
         
         db.session.add(chat)
         db.session.commit()

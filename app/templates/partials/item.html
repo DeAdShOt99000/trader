@@ -1,14 +1,14 @@
-<div class="single-item-cont" id="item-{{ item.id }}">
+<div class="single-item-cont location-{% if item.location == '6 October' %}october{% else %}{{ item.location|lower }}{% endif %}" id="item-{{ item.id }}">
     <a class="item" href="{{ url_for('single_item', item_id=item.id) }}">
         <div class="img-cont">
             <img src="{{ url_for('serve_image', img_id=item.images[0].id) }}" alt="">
         </div>
         <div class="upper">
-            <div>{{ item.title }}</div>
-            <div>{{ price_format(item.price) }} <span class="egp">EGP</span></div>
+            <div class="item-title">{{ item.title }}</div>
+            <div class="item-price">{{ price_format(item.price) }} <span class="egp">EGP</span></div>
         </div>
         <div class="lower">
-            <div>
+            <div class="item-location">
                 <svg
                     width="18px"
                     height="18px"

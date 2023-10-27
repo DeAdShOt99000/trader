@@ -53,7 +53,7 @@
             </svg> {{ item.location }}
         </div>
 
-        <div class="item-created-at">{{ date_format(item.created_at) }}</div>
+        <div class="item-created-at">{{ date_format(item.created_at, force_datetime=True) }}</div>
         
         <div class="other-items-cont">
             <div class="title">Other items:</div>
