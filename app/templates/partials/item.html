@@ -1,29 +1,49 @@
-<a class="item" href="{{ url_for('single_item', item_id=item.id) }}">
-    <div class="img-cont">
-        <img src="{{ url_for('serve_image', img_id=item.images[0].id) }}" alt="">
-    </div>
-    <div class="upper">
-        <div>{{ item.title }}</div>
-        <div>{{ price_format(item.price) }} <span class="egp">EGP</span></div>
-    </div>
-    <div class="lower">
-        <div>
-            <svg
-                width="18px"
-                height="18px"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="#fff"
-            >
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 4.25 7 13 7 13s7-8.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-            </svg> {{ item.location }}
+<div class="single-item-cont" id="item-{{ item.id }}">
+    <a class="item" href="{{ url_for('single_item', item_id=item.id) }}">
+        <div class="img-cont">
+            <img src="{{ url_for('serve_image', img_id=item.images[0].id) }}" alt="">
         </div>
-        <div>{{ date_format(item.created_at) }}</div>
-    </div>
+        <div class="upper">
+            <div>{{ item.title }}</div>
+            <div>{{ price_format(item.price) }} <span class="egp">EGP</span></div>
+        </div>
+        <div class="lower">
+            <div>
+                <svg
+                    width="18px"
+                    height="18px"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="#fff"
+                >
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 4.25 7 13 7 13s7-8.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                </svg> {{ item.location }}
+            </div>
+            <div>{{ date_format(item.created_at) }}</div>
+        </div>
+    </a>
     {% if seller_page %}
-    <div class="edit-delete">
-        <button class="edit-btn">Edit</button>
-        <button class="delete-btn">Delete</button>
+    <div class="seller-page-btns">
+        {% if all_items_page %}
+        <div class="edit-delete">
+            <button class="edit-btn" onclick="window.location.href = `{{ url_for('edit_item', item_id=item.id) }}`">Edit</button>
+            <button class="delete-btn" onclick="window.location.href = `{{ url_for('delete_item', item_id=item.id) }}`">Delete</button>
+        </div>
+        {% elif fav_page %}
+        <button class="favourite-btn" id="fav-item-{{ item.id }}">
+            <svg
+                width="25"
+                height="25"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="red"
+                viewBox="0 0 24 24"
+                >
+                <path
+                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.59 3.81 15.26 3 17 3 20.08 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                />
+            </svg>
+        </button>
+        {% endif %}
     </div>
     {% endif %}
-</a>
+</div>

@@ -5,7 +5,7 @@ from flask import render_template, request, redirect, url_for, send_file, abort
 from flask_login import current_user, login_required
 
 from app import app, db, login_manager
-from app.models import User, Item, Image, Chat, Favourite
+from app.models import User, Item, Image, Chat
 from app.forms import Sell
 
 @login_manager.user_loader
@@ -105,10 +105,10 @@ def single_item(item_id):
         abort(404)
     
     if current_user.is_authenticated:
-        is_favourite = list(filter(lambda x: x.item_id == item_id and x.owner == current_user.id, item.favourites))
+        is_favourite = item in current_user.favourites
     else:
         is_favourite = False
-    return render_template("single-item.html", items=items, item=item, seller=seller, is_favourite=bool(is_favourite))
+    return render_template("single-item.html", items=items, item=item, seller=seller, is_favourite=is_favourite)
 
 @app.get("/chats")
 def chats():
@@ -183,8 +183,6 @@ def single_chat(user_id):
             contact.contacts.append(current_user)
         
         db.session.add(chat)
-        db.session.add(contact)
-        db.session.add(current_user)
         db.session.commit()
         return {'message': 'Data received successfully'}
 
@@ -225,24 +223,21 @@ def tag_as_viewed():
     for id in ids_lst:
         chat = Chat.query.get(id)
         chat.viewed = True
-        db.session.add(chat)
         db.session.commit()
     return {'message': 'success!'}
 
 @app.get("/chat/favourite-json/<int:item_id>")
 def favourite_json(item_id):    
-    favourite = Favourite.query.filter_by(item_id=item_id, owner=current_user.id).first()
+    user_favourites = current_user.favourites
+    item = Item.query.get_or_404(item_id)
     
-    if favourite:
-        db.session.delete(favourite)
+    if item in user_favourites:
+        user_favourites.remove(item)
         new_status = False
     else:
-        new_favourite = Favourite(
-            owner=current_user.id,
-            item_id=item_id
-        )
-        db.session.add(new_favourite)
+        user_favourites.append(item)
         new_status = True
+        
     db.session.commit()
     return {'message': 'success', 'favourite': new_status}
 
@@ -255,6 +250,34 @@ def my_items():
 @app.get("/favourites")
 @login_required
 def favourites():
-    fav_items = Item.query.filter_by(owner=current_user.id).all()[0]
-    print(current_user.favourites[0].item_id)
-    return render_template('favourites.html')
+    fav_items = current_user.favourites
+    return render_template('favourites.html', fav_items=fav_items)
+
+@app.route("/my-items/edit/<int:item_id>", methods=('GET', 'POST'))
+def edit_item(item_id):
+    item = Item.query.filter_by(id=item_id, owner=current_user.id).first_or_404()
+    form = Sell(obj=item)
+    
+    if form.validate_on_submit():
+        form.populate_obj(item)
+        db.session.commit()
+        
+        next = request.args.get('next')
+        
+        return redirect(next if next else url_for('my_items'))
+        
+    return render_template('edit-item.html', form=form)
+
+@app.get("/my-items/delete/<int:item_id>")
+def delete_item(item_id):
+    item = Item.query.filter_by(id=item_id, owner=current_user.id).first_or_404()
+    
+    for image in item.images:
+        db.session.delete(Image.query.get(image.id))
+
+    db.session.delete(item)
+    db.session.commit()
+    
+    next = request.args.get('next')
+        
+    return redirect(next if next else url_for('my_items'))

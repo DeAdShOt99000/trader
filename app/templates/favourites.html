@@ -1,9 +1,29 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/favourites.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/partials/item.css') }}">
 {% endblock %}
 
 {% block content %}
+    <div class="items-cont seller-items-cont">
+        {% for item in fav_items %}
+            {% with seller_page=True, fav_page=True %}
+                {% include 'partials/item.html' %}
+            {% endwith %}
+        {% endfor %}
+    </div>
+    <script>
+        const favouriteBtn = document.querySelectorAll('.favourite-btn');
 
+        for (let fav of favouriteBtn){
+            fav.addEventListener('click', function(){
+                const itemId = this.id.split('-')[2];
+
+                fetch(`/chat/favourite-json/${itemId}`)
+                .then(response => response.json());
+
+                document.querySelector(".items-cont").removeChild(document.getElementById(`item-${itemId}`));
+            })
+        }
+    </script>
 {% endblock %}
