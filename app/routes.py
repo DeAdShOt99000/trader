@@ -1,5 +1,6 @@
 from io import BytesIO
 from datetime import datetime, timedelta
+from cryptography.fernet import Fernet
 
 from flask import render_template, request, redirect, url_for, send_file, abort
 from flask_login import current_user, login_required
@@ -14,6 +15,8 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 users_colors = {'a': '6290C8', 'b': '9ECE9A', 'c': '5D4E6D', 'd': '9B9ECE', 'e': 'FFAD05', 'f': 'D8315B', 'g': '60D394', 'h': 'C287E8', 'i': 'C0BDA5', 'j': 'CC978E', 'k': '03254E', 'l': '5E2BFF', 'm': 'A1683A', 'n': '499F68', 'o': '2E5EAA', 'p': 'E1CE7A', 'q': '48A9A6', 'r': '957FEF', 's': 'D78521', 't': '92140C', 'u': 'CDDFA0', 'v': '73C2BE', 'w': 'F7CB15', 'x': '878E88', 'y': '14453D', 'z': '48BEFF'}
+
+cipher = Fernet(b'Of_Jto2R-cJgpmgPE12NYPprUKpujfpZdsjkzWmIPZc=')
 
 def clean_dt(date_time: datetime):
     date = date_time.date()
@@ -135,7 +138,7 @@ def chats_json():
         contact_chat = list(filter(lambda c: c.sent_by == contact.id, chat_set))
         try:
             last_msg_details = contact_chat[-1]
-            last_msg = (last_msg_details.text, last_msg_details.sent_at, last_msg_details.id)
+            last_msg = (cipher.decrypt(last_msg_details.text).decode(), last_msg_details.sent_at, last_msg_details.id)
         except:
             last_msg = ('', datetime(1, 1, 1), -1)
             
@@ -175,7 +178,7 @@ def single_chat(user_id):
     elif request.method == 'POST':
         text_message = request.json['text-message']
         chat = Chat(
-            text=text_message,
+            text=cipher.encrypt(text_message.encode()),
             sent_by=current_user.id,
             received_by=contact.id,
             sent_at=datetime.now(),
@@ -210,7 +213,9 @@ def chat_json(user_id):
                 date_time = clean_dt(chat.sent_at)
                 dict_entry = vars(chat)
                 del dict_entry['_sa_instance_state']
+                
                 dict_entry.update({
+                    'text': cipher.decrypt(dict_entry['text']).decode(),
                     'date': date_time[0],
                     'time': date_time[1]
                 })
