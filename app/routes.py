@@ -118,16 +118,17 @@ def chats():
 @app.get("/chats/chats-json")
 def chats_json():
     # List of tuples showing all current user contacts ids
-    query_lst = db.session.query(user_contacts).filter(or_(user_contacts.c.contact_id == current_user.id, user_contacts.c.contacted_id == current_user.id)).all()
+    # query_lst = db.session.query(user_contacts).filter(or_(user_contacts.c.contact_id == current_user.id, user_contacts.c.contacted_id == current_user.id)).all()
     
     # Converting the tuples list to integers list showing user contacts
-    contacts_lst = list(map(lambda x: x[0] if x[0] != current_user.id else x[1], query_lst))
+    # contacts_lst = list(map(lambda x: x[0] if x[0] != current_user.id else x[1], query_lst))
     
-    my_contacts = User.query.filter(User.id.in_(contacts_lst)).all()
+    # my_contacts = User.query.filter(User.id.in_(contacts_lst)).all()
+    my_contacts = set(current_user.contacts.all() + current_user.contacted_by.all())
     chat_set = current_user.received_chat
-    print(my_contacts)
+    # print(my_contacts)
     
-    print([c.sent_by for c in chat_set])
+    # print([c.sent_by for c in chat_set])
     
     contacts_dict_lst = []
     for contact in my_contacts:
@@ -181,7 +182,7 @@ def single_chat(user_id):
             item_id=request.json.get('item-id')
         )
         
-        if contact not in current_user.contacts.all():
+        if contact not in current_user.contacts.all() and current_user not in contact.contacts.all():
             current_user.contacts.append(contact)
         
         db.session.add(chat)
@@ -191,13 +192,14 @@ def single_chat(user_id):
 @app.get("/chat/<int:user_id>/chat-json")
 def chat_json(user_id):
         try:
-            friend = current_user.contacts.filter_by(id=user_id)[0]
+            # contact = current_user.contacts.filter_by(id=user_id)[0]
+            contact = User.query.get(user_id)
         except:
             abort(404)
             
         item_id = request.args.get('item-id')
         
-        chat_history = list(filter(lambda c: c.sent_by == current_user.id and c.received_by == friend.id or c.sent_by == friend.id and c.received_by == current_user.id, Chat.query.all()))
+        chat_history = list(filter(lambda c: c.sent_by == current_user.id and c.received_by == contact.id or c.sent_by == contact.id and c.received_by == current_user.id, Chat.query.all()))
         
         if item_id:
             chat_history = list(filter(lambda x: str(x.item_id) == item_id, chat_history))
