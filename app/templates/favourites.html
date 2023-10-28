@@ -2,9 +2,27 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/partials/item.css') }}">
+    <script src="{{ url_for('static', filename='js/search-location.js') }}" defer></script>
+{% endblock %}
+
+{% block nav_search %}nav-search{% endblock %}
+{% block search_location %}
+    <input type="search" class="search" placeholder="Search...">
+    <div class="location-cont">
+        <div>Location</div>
+        <select name="location" class="location" title="Location">
+            <option class="all" value="">All</option>
+            <option class="maadi" value="maadi">Maadi</option>
+            <option class="october" value="october">6 October</option>
+            <option class="faisal" value="faisal">Faisal</option>
+            <option class="madenti" value="madenti">Madenti</option>
+            <option class="haram" value="haram">Haram</option>
+        </select>
+    </div>
 {% endblock %}
 
 {% block content %}
+    <header class="pge-header" style="margin: 15px;">- Favourites -</header>
     <div class="items-cont seller-items-cont">
         {% for item in fav_items %}
             {% with seller_page=True, fav_page=True %}
@@ -12,18 +30,27 @@
             {% endwith %}
         {% endfor %}
     </div>
+    <div class='no-fav empty-pge' style="display: none;">No favourites, <a href="{{ url_for('index') }}">Browse all items!</a></div>
     <script>
-        const favouriteBtn = document.querySelectorAll('.favourite-btn');
+        const favouriteBtns = document.querySelectorAll('.favourite-btn');
+        const noFav = document.querySelector('.no-fav');
 
-        for (let fav of favouriteBtn){
-            fav.addEventListener('click', function(){
-                const itemId = this.id.split('-')[2];
+        if (favouriteBtns.length){
+            for (let fav of favouriteBtns){
+                fav.addEventListener('click', function(){
+                    const itemId = this.id.split('-')[2];
+    
+                    fetch(`/favourite-json/${itemId}`);
 
-                fetch(`/chat/favourite-json/${itemId}`)
-                .then(response => response.json());
+                    document.querySelector(".items-cont").removeChild(document.getElementById(`item-${itemId}`));
 
-                document.querySelector(".items-cont").removeChild(document.getElementById(`item-${itemId}`));
-            })
-        }
+                    if (document.querySelector('.items-cont').children.length < 1){
+                        noFav.style.display = 'block';
+                    };
+                });
+            };
+        } else {
+            noFav.style.display = 'block';
+        };
     </script>
 {% endblock %}

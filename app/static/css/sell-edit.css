@@ -1,14 +1,67 @@
-form {
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    margin: auto;
-    align-items: center;
+.pge-header {
+    font-size: 3rem;
+    padding: 10px;
 }
 
-form input, textarea, select {
+.center-form {
+    width: 550px;
+    margin: auto;
+    text-align: center;
+}
+
+.center-form .input-field {
+    width: 80%;
+    padding: 5px;
+    margin: 10px;
+    background-color: rgba(66, 121, 161, 0.3);
+    border: 2px solid #427AA1;
+    border-radius: 5px;
+    transition: transform 0.3s ease-out;
+}
+
+.center-form .input-field:hover {
+    transform: scale(101%);
+}
+
+.center-form .input-field::placeholder {
+    color: #EBF2FA;
+    text-shadow: 0.5px 0.5px #427AA1;
+}
+
+.center-form input[type=submit]{
+    width: 40%;
     padding: 5px;
     border-radius: 10px;
-    margin: 10px;
+    background-color: #427AA1;
+    border-color: #ffff;
+    color: #ffff;
+    opacity: 0.7;
+}
+
+.center-form input[type=submit]:hover {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.center-form input[type="submit"]:disabled {
+    transform: scale(100%);
+    cursor: default;
+    opacity: 0.3
+}
+
+.center-form > ul {
+    list-style-type: none;
+}
+
+.red-warning {
     width: 50%;
+    font-size: 0.8rem;
+    background-color: tomato;
+    border: 2px solid red;
+    text-shadow: 1px 1px red;
+    border-radius: 5px;
+    padding: 5px 10px;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 5px;
 }

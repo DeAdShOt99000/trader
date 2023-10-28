@@ -105,7 +105,6 @@ button:hover {
     grid-column-start: 3;
     grid-column-end: 5;
     grid-row-start: 1;
-    /* margin: 10px; */
 }
 
 .title-price {
@@ -118,7 +117,7 @@ button:hover {
     margin-top: 10px;
 }
 
-.item-title {
+.title-price .item-title {
     font-size: 2rem;
     color: #064789;
     text-shadow: 2px 2px white;
@@ -138,7 +137,6 @@ button:hover {
     color: #064789;
     overflow: auto;
     background-color: #7eccf065;
-    /* height: 235px; */
     border-radius: 20px;
     padding: 10px;
     grid-row: 2;

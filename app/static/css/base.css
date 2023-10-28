@@ -14,18 +14,17 @@ body {
 }
 
 nav {
-    position: relative;
     display: grid;
-    grid-template-columns: 120px 120px 1fr 150px;
+    grid-template-columns: 120px 1fr auto;
     background-color: #7eccf0;
     height: 45px;
 }
 
 .nav-search {
-    grid-template-columns: 120px 30% 100px 1fr 150px;
+    grid-template-columns: 120px 30% 100px 1fr auto;
 }
 
-.app-name {
+.app-name, .pge-header {
     position: relative;
     top: 5px;
     font-family: Cookie;
@@ -64,15 +63,29 @@ nav .search:hover {
     opacity: 1;
 }
 
-/********/
-nav .location {
-    background-color: #7eccf0;
-    border: none;
-    color: white;
-    width: fit-content;
+nav .location-cont {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 5px;
+    padding: 3px;
+    color: #064789;
+    font-weight: bolder;
+    font-size: 0.8rem;
+    text-shadow: 1px 1px white;
     text-align: center;
 }
-/*********/
+
+nav .location {
+    background-color: #7eccf0;
+    border: 2px solid #064789;
+    border-radius: 10px;
+    color: white;
+    width: fit-content;
+    height: fit-content;
+    padding: 0 3px;
+    text-align: center;
+}
 
 .all-links {
     display: flex;
@@ -122,6 +135,7 @@ nav .location {
     padding-left: 10px;
     transition: background-color .2s ease-out;
     cursor: pointer;
+    width: fit-content;
 }
 
 .user-card-cont:hover {
@@ -185,4 +199,20 @@ nav .location {
     align-items: center;
     gap: 5px;
     width: 100%;
+}
+
+.success-message {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: lightgreen;
+    border: 3px solid green;
+    border-radius: 10px;
+    color: green;
+    font-weight: bolder;
+    text-align: center;
+    padding: 7px 10px;
+    transition: opacity 1.5s;
+    z-index: 2;
 }

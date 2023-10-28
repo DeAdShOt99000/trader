@@ -2,9 +2,27 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/partials/item.css') }}">
+    <script src="{{ url_for('static', filename='js/search-location.js') }}" defer></script>
+{% endblock %}
+
+{% block nav_search %}nav-search{% endblock %}
+{% block search_location %}
+    <input type="search" class="search" placeholder="Search...">
+    <div class="location-cont">
+        <div>Location</div>
+        <select name="location" class="location" title="Location">
+            <option class="all" value="">All</option>
+            <option class="maadi" value="maadi">Maadi</option>
+            <option class="october" value="october">6 October</option>
+            <option class="faisal" value="faisal">Faisal</option>
+            <option class="madenti" value="madenti">Madenti</option>
+            <option class="haram" value="haram">Haram</option>
+        </select>
+    </div>
 {% endblock %}
 
 {% block content %}
+    <header class="pge-header" style="margin: 15px;">- My items -</header>
     <div class="items-cont seller-items-cont">
         {% for item in items %}
             {% with seller_page=True, all_items_page=True %}
@@ -12,4 +30,7 @@
             {% endwith %}
         {% endfor %}
     </div>
+    {% if not items %}
+        <div class='no-items empty-pge'>No items, <a href="{{ url_for('sell') }}">sell you first item!</a></div>
+    {% endif %}
 {% endblock %}

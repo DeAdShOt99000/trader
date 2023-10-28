@@ -1,15 +1,11 @@
 (function(){
     'use strict';
 
-    const location = document.querySelector('.location');
+    const successMsg = document.querySelector('.success-message');
 
-    let current_location = localStorage.getItem('location');
-
-    if (current_location){
-        location.querySelector(`.${current_location}`).setAttribute('selected', 'selected')
+    if (successMsg){
+        setTimeout(() => {
+            successMsg.style.opacity = 0
+        }, 2000)
     };
-
-    location.addEventListener('change', function(){
-        localStorage.setItem('location', location.value)
-    });
 })();

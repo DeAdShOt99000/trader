@@ -5,54 +5,56 @@
 {% endblock %}
 
 {% block content %}
-    <form action="" enctype="multipart/form-data" method="POST">
+    <header class="pge-header">- Sell -</header>
+
+    <form class="center-form" action="" enctype="multipart/form-data" method="POST">
         {{ form.csrf_token }}
 
-        {{ form.image }}
+        {{ form.image(class="input-field") }}
         {% if form.image.errors %}
             <ul>
                 {% for err in form.image.errors %}
-                <li>{{ err }}</li>
+                <li class="red-warning">{{ err }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
 
-        {{ form.title }}
+        {{ form.title(class="input-field") }}
         {% if form.title.errors %}
             <ul>
                 {% for err in form.title.errors %}
-                <li>{{ err }}</li>
+                <li class="red-warning">{{ err }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
 
-        {{ form.description }}
+        {{ form.description(class="input-field") }}
         {% if form.description.errors %}
             <ul>
                 {% for err in form.description.errors %}
-                <li>{{ err }}</li>
+                <li class="red-warning">{{ err }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
 
-        {{ form.location }}
+        {{ form.location(class="input-field") }}
         {% if form.location.errors %}
             <ul>
                 {% for err in form.location.errors %}
-                <li>{{ err }}</li>
+                <li class="red-warning">{{ err }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
         
-        {{ form.price }}
+        {{ form.price(class="input-field") }}
         {% if form.price.errors %}
             <ul>
                 {% for err in form.price.errors %}
-                <li>{{ err }}</li>
+                <li class="red-warning">{{ err }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
 
-        {{ form.submit() }}
+        {{ form.submit(class="input-field") }}
     </form>
 {% endblock %}

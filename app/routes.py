@@ -2,52 +2,21 @@ from io import BytesIO
 from datetime import datetime, timedelta
 from cryptography.fernet import Fernet
 
-from flask import render_template, request, redirect, url_for, send_file, abort
+from flask import render_template, request, redirect, url_for, send_file, abort, flash
 from flask_login import current_user, login_required
+from sqlalchemy import or_
 
 from app import app, db, login_manager
-from app.models import User, Item, Image, Chat, user_contacts
+from app.models import User, Item, Image, Chat
 from app.forms import Sell
-from sqlalchemy import or_
+from app.my_functions import formatted_dt
+
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-users_colors = {'a': '6290C8', 'b': '9ECE9A', 'c': '5D4E6D', 'd': '9B9ECE', 'e': 'FFAD05', 'f': 'D8315B', 'g': '60D394', 'h': 'C287E8', 'i': 'C0BDA5', 'j': 'CC978E', 'k': '03254E', 'l': '5E2BFF', 'm': 'A1683A', 'n': '499F68', 'o': '2E5EAA', 'p': 'E1CE7A', 'q': '48A9A6', 'r': '957FEF', 's': 'D78521', 't': '92140C', 'u': 'CDDFA0', 'v': '73C2BE', 'w': 'F7CB15', 'x': '878E88', 'y': '14453D', 'z': '48BEFF'}
-
 cipher = Fernet(b'Of_Jto2R-cJgpmgPE12NYPprUKpujfpZdsjkzWmIPZc=')
-
-def clean_dt(date_time: datetime):
-    date = date_time.date()
-    if date == datetime.today().date():
-        clean_date = 'Today'
-    elif date == (datetime.today().date() - timedelta(days=1)):
-        clean_date = 'Yesterday'
-    else:
-        months = {1: 'Jan', 2: 'Feb', 3: 'Mar',
-                  4: 'Apr', 5: 'May', 6: 'Jun',
-                  7: 'Jul', 8: 'Aug', 9: 'Sep',
-                  10: 'Oct', 11: 'Nov', 12: 'Dec'}
-        clean_day = str(date.day)
-        if clean_day[0] == '0':
-            clean_day = clean_day[1]
-        clean_date = f'{months[date.month]} {clean_day}, {date.year}'
-    
-    clean_minute = date_time.minute
-    if len(str(clean_minute)) < 2:
-        clean_minute = f'0{clean_minute}'
-    
-    if date_time.hour == 0:
-        clean_time = f'12:{clean_minute} AM'
-    elif date_time.hour < 13:
-        clean_time = f'{date_time.hour}:{clean_minute} AM'
-    else:
-        clean_hour = date_time.hour - 12
-        clean_time = f'{clean_hour}:{clean_minute} PM'
-    return (clean_date, clean_time)
-
-#--------------#
 
 @app.get("/image/<int:img_id>")
 def serve_image(img_id):
@@ -89,11 +58,12 @@ def sell():
         
         db.session.add(image)
         db.session.commit()
-        return redirect(url_for("index"))
+        return redirect(url_for("my_items"))
         
     return render_template("sell.html", form=form)
 
 @app.get("/<int:item_id>/")
+@login_required
 def single_item(item_id):
     items = []
     item = None
@@ -115,23 +85,14 @@ def single_item(item_id):
     return render_template("single-item.html", items=items, item=item, seller=seller, is_favourite=is_favourite)
 
 @app.get("/chats")
+@login_required
 def chats():
     return render_template("chats.html")
 
 @app.get("/chats/chats-json")
 def chats_json():
-    # List of tuples showing all current user contacts ids
-    # query_lst = db.session.query(user_contacts).filter(or_(user_contacts.c.contact_id == current_user.id, user_contacts.c.contacted_id == current_user.id)).all()
-    
-    # Converting the tuples list to integers list showing user contacts
-    # contacts_lst = list(map(lambda x: x[0] if x[0] != current_user.id else x[1], query_lst))
-    
-    # my_contacts = User.query.filter(User.id.in_(contacts_lst)).all()
     my_contacts = set(current_user.contacts.all() + current_user.contacted_by.all())
     chat_set = current_user.received_chat
-    # print(my_contacts)
-    
-    # print([c.sent_by for c in chat_set])
     
     contacts_dict_lst = []
     for contact in my_contacts:
@@ -155,7 +116,7 @@ def chats_json():
             'email': contact.email,
             'not_viewed': not_viewed, # The number of unviewed messages
             'last_msg': last_msg, # Last message's text, time and id
-            'user_color': users_colors[contact.firstname[0:1].lower()]
+            'user_color': contact.profile_color
         }
         
         contacts_dict_lst.append(clean_contact_dict)
@@ -166,6 +127,7 @@ def chats_json():
     return {'last_msg': 'same'}
     
 @app.route("/chat/<int:user_id>", methods=('GET', 'POST'))
+@login_required
 def single_chat(user_id):
     contact = User.query.get_or_404(user_id)
     if not contact:
@@ -173,7 +135,8 @@ def single_chat(user_id):
     item_id = request.args.get('item-id')
         
     if request.method == "GET":
-        return render_template('single-chat.html', contact=contact, item_id=item_id)
+        next = request.args.get('next')
+        return render_template('single-chat.html', contact=contact, item_id=item_id, next=next)
     
     elif request.method == 'POST':
         text_message = request.json['text-message']
@@ -195,33 +158,29 @@ def single_chat(user_id):
 @app.get("/chat/<int:user_id>/chat-json")
 def chat_json(user_id):
         try:
-            # contact = current_user.contacts.filter_by(id=user_id)[0]
             contact = User.query.get(user_id)
         except:
             abort(404)
-            
-        item_id = request.args.get('item-id')
-        
+                    
         chat_history = list(filter(lambda c: c.sent_by == current_user.id and c.received_by == contact.id or c.sent_by == contact.id and c.received_by == current_user.id, Chat.query.all()))
-        
-        if item_id:
-            chat_history = list(filter(lambda x: str(x.item_id) == item_id, chat_history))
-        
+                
         ch_dict_lst = []
         if chat_history:
             for chat in chat_history:
-                date_time = clean_dt(chat.sent_at)
+                date_time = formatted_dt(chat.sent_at)
                 dict_entry = vars(chat)
                 del dict_entry['_sa_instance_state']
                 
                 dict_entry.update({
                     'text': cipher.decrypt(dict_entry['text']).decode(),
                     'date': date_time[0],
-                    'time': date_time[1]
+                    'time': date_time[1],
+                    'item_title': Item.query.get_or_404(dict_entry['item_id']).title if dict_entry['item_id'] else None,
                 })
                 ch_dict_lst.append(dict_entry)
             
             if ch_dict_lst[-1]['id'] != int(request.args.get('last-msg-id')):
+                print(ch_dict_lst[-1]['id'], int(request.args.get('last-msg-id')))
                 return ch_dict_lst
             return [{'id': 'same'}]
         return {}
@@ -235,21 +194,6 @@ def tag_as_viewed():
         db.session.commit()
     return {'message': 'success!'}
 
-@app.get("/chat/favourite-json/<int:item_id>")
-def favourite_json(item_id):    
-    user_favourites = current_user.favourites
-    item = Item.query.get_or_404(item_id)
-    
-    if item in user_favourites:
-        user_favourites.remove(item)
-        new_status = False
-    else:
-        user_favourites.append(item)
-        new_status = True
-        
-    db.session.commit()
-    return {'message': 'success', 'favourite': new_status}
-
 @app.get("/my-items")
 @login_required
 def my_items():
@@ -262,7 +206,24 @@ def favourites():
     fav_items = current_user.favourites
     return render_template('favourites.html', fav_items=fav_items)
 
+@app.get("/favourite-json/<int:item_id>")
+def favourite_json(item_id):    
+    user_favourites = current_user.favourites
+    item = Item.query.get_or_404(item_id)
+    
+    if item in user_favourites:
+        user_favourites.remove(item)
+        new_status = False
+    else:
+        user_favourites.append(item)
+        new_status = True
+        
+    db.session.commit()
+    
+    return {'message': 'success', 'favourite': new_status}
+
 @app.route("/my-items/edit/<int:item_id>", methods=('GET', 'POST'))
+@login_required
 def edit_item(item_id):
     item = Item.query.filter_by(id=item_id, owner=current_user.id).first_or_404()
     form = Sell(obj=item)
@@ -273,11 +234,12 @@ def edit_item(item_id):
         
         next = request.args.get('next')
         
+        flash("Item was successfully edited!", 'success')
         return redirect(next if next else url_for('my_items'))
-        
     return render_template('edit-item.html', form=form)
 
 @app.get("/my-items/delete/<int:item_id>")
+@login_required
 def delete_item(item_id):
     item = Item.query.filter_by(id=item_id, owner=current_user.id).first_or_404()
     
@@ -289,4 +251,5 @@ def delete_item(item_id):
     
     next = request.args.get('next')
         
+    flash("Item was successfully deleted!", 'success')
     return redirect(next if next else url_for('my_items'))

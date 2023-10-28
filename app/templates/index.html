@@ -3,17 +3,26 @@
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/partials/item.css') }}">
-    <script src="{{ url_for('static', filename='js/index.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/search.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/search-location.js') }}" defer></script>
 {% endblock %}
 
 {% block nav_search %}nav-search{% endblock %}
-{% block search %}
+{% block search_location %}
     <input type="search" class="search" placeholder="Search...">
+    <div class="location-cont">
+        <div>Location</div>
+        <select name="location" class="location" title="Location">
+            <option class="all" value="">All</option>
+            <option class="maadi" value="maadi">Maadi</option>
+            <option class="october" value="october">6 October</option>
+            <option class="faisal" value="faisal">Faisal</option>
+            <option class="madenti" value="madenti">Madenti</option>
+            <option class="haram" value="haram">Haram</option>
+        </select>
+    </div>
 {% endblock %}
 
 {% block content %}
-
 
 <div class="items-cont">
     {% for item in items %}

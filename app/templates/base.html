@@ -16,17 +16,8 @@
             <nav class="{% block nav_search %}{% endblock %}">
                 <a href="{{ url_for('index') }}" class="app-name">Trader</a>
 
-                {% block search %}
+                {% block search_location %}
                 {% endblock %}
-
-                <select name="location" class="location" class="">
-                    <option class="all" value="">All</option>
-                    <option class="maadi" value="maadi">Maadi</option>
-                    <option class="october" value="october">6 October</option>
-                    <option class="faisal" value="faisal">Faisal</option>
-                    <option class="madenti" value="madenti">Madenti</option>
-                    <option class="haram" value="haram">Haram</option>
-                </select>
 
                 <div class="all-links">
                     <a href="{{ url_for('sell') }}" class="nav-link">Sell</a>
@@ -50,7 +41,12 @@
 
             </nav>
         </header>
+        
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+        <div class="{{ category }}-message">{{ message }}</div>
+    {% endfor %}
     {% endblock %}
+
     {% block content %}
     {% endblock %}
 </body>

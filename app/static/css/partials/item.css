@@ -132,3 +132,22 @@ span.egp {
 .seller-page-btns button:hover {
     opacity: 1;
 }
+
+/*********Favourite page*********/
+
+.empty-pge {
+    font-size: 1.7rem;
+    text-shadow: 1px 1px #064789;
+    text-align: center;
+    padding: 15px;
+}
+
+.empty-pge a {
+    color: #064789;
+    text-shadow: white 1px 1px;
+}
+
+.empty-pge a:hover {
+    color: #427AA1;
+    text-shadow: white 1px 1px;
+}

@@ -1,42 +1,10 @@
-from string import punctuation, ascii_lowercase, ascii_uppercase, digits
-
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, EmailField, SubmitField, FileField, TextAreaField, SelectField, DecimalField
-from wtforms.validators import DataRequired, Length, EqualTo, Email, ValidationError, NumberRange
+from wtforms.validators import DataRequired, Length, EqualTo, Email, NumberRange
 
-from app.models import User
+from app.my_functions import validate_password_chars, validate_username, validate_email, validate_extension
 
-required_chars = {"upper": ascii_uppercase, "lower": ascii_lowercase, "digits": digits, "symbols": punctuation}
 
-def validate_password_chars(form, field):
-    is_four = 0
-    for rule in required_chars:
-        for char in required_chars[rule]:
-            if char in field.data:
-                is_four += 1
-                break
-    
-    if is_four < 4:
-        raise ValidationError("Password does not meet requirements")
-    
-def validate_username(form, field):
-    user = User.query.filter_by(username=field.data).first()
-    if user:
-        raise ValidationError("Username already exists")
-
-def validate_email(form, field):
-    user = User.query.filter_by(email=field.data).first()
-    if user:
-        raise ValidationError("Email already exists")
-        
-def validate_extension(form, field):
-    allowed_extensions = ["png", "jpg", "jpeg", "gif"]
-    
-    if field.data.filename:
-        ext = field.data.filename.split(".")[1]
-        if ext not in allowed_extensions:
-            raise ValidationError("File type not allowed")
-    
 class SignUp(FlaskForm):
     firstname = StringField("First name", validators=[DataRequired(), Length(min=1, max=50, message="Name must be between 1 and 50 characters long")])
     lastname = StringField("Last name", validators=[DataRequired(), Length(min=1, max=50, message="Name must be between 1 and 50 characters long")])

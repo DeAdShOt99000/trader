@@ -70,7 +70,7 @@
         .then(response => response.json())
         .then(data => {
             const last_msg_id_server = data[Object.values(data).length-1] ? data[Object.values(data).length-1]['id']: -1;
-            if (last_msg_id_server != 'same' && last_msg_id != -1){
+            if (last_msg_id_server != 'same'){
                 last_msg_id = last_msg_id_server;
                 chatBox.innerHTML = '';
     
@@ -85,13 +85,22 @@
         
                         const chatElementContainer = document.createElement('div');
                         chatElementContainer.setAttribute('class', 'chat-text-container');
-        
+         
                         const chatElement = document.createElement('div');
+                        
+                        if (chat.item_id){
+                            const itemTitleElement = document.createElement('a')
+                            itemTitleElement.setAttribute('href', `/${chat.item_id}/`)
+                            itemTitleElement.classList.add('item-link')
+                            itemTitleElement.innerHTML = "<span>Item: </span>" + chat.item_title
+
+                            chatElement.appendChild(itemTitleElement)
+                        }
                         
                         const chatText = document.createElement('div');
                         chatText.innerText = chat.text;
                         chatText.setAttribute('class', 'text');
-
+                        
                         const chatTime = document.createElement('div');
                         chatTime.innerText = chat.time;
                         chatTime.setAttribute('class', 'time');

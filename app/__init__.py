@@ -55,7 +55,6 @@ def date_format(dateT, force_datetime=False):
     
 app.jinja_env.globals.update(price_format=price_format)
 app.jinja_env.globals.update(date_format=date_format)
-    
 
 with open(os.path.join(basedir, "static\\img\\default_image.jpg"), "rb") as di:
     default_image = di.read()
