@@ -1,6 +1,7 @@
 (function(){
     'use strict';
-    
+
+    // Get form input elements and other necessary DOM elements
     const firstName = document.getElementById('firstName');
     const lastName = document.getElementById('lastName');
     const checkDiv = document.querySelector('.check-username-div');
@@ -10,17 +11,20 @@
     const passwordInp = document.getElementById('password');
     const rePassword = document.getElementById('r-password');
     
+    // Set focus to the first input field
     document.querySelector('input[type="text"]:first-child').focus();
 
+    // Object to keep track of input validation status
     const checkAll = {
-        firstName: 1 ? firstName.value: 0,
-        lastName: 1 ? lastName.value: 0,
+        firstName: firstName.value ? 1 : 0,
+        lastName: lastName.value ? 1 : 0,
         username: 0,
         email: 0,
         password: 0,
         rePassword: 0
     };
 
+    // Function to validate first name and last name inputs
     function checkName(firstLast){
         if (firstLast.value.length >= 1){
             firstLast.style.borderColor = 'green';
@@ -33,6 +37,7 @@
         updateSubmitState();
     };
 
+    // Function to enable or disable submit button based on validation status
     function updateSubmitState(){
         if (Object.values(checkAll).includes(0)){
             document.querySelector('input[type="submit"]').disabled = true;
@@ -41,21 +46,27 @@
         };
     };
 
-    firstName.addEventListener('input', function(event){
+    // Event listener for validating first name upon input
+    firstName.addEventListener('input', event => {
         checkName(event.target);
     });
 
-    lastName.addEventListener('input', function(event){
+    // Event listener for validating last name upon input
+    lastName.addEventListener('input', event => {
         checkName(event.target);
     });
 
+    // Function to validate username input
     function checkUsername(){
         if (usernameInp.value.length > 0){
             checkDiv.querySelector('img').style.display = 'inline';
 
+            // Username must only include letters, numbers, underscore and hyphen
+            // and it should be between 3 and 16 characters long
             const validUsername = /^[a-zA-Z0-9_-]{3,16}$/;
 
             if (validUsername.test(usernameInp.value)) {
+                // Check if username already exists in database
                 fetch(window.checkUserEmail, {
                     method: 'POST',
                     body: JSON.stringify({
@@ -80,7 +91,7 @@
                         checkDiv.querySelector('span').className = 'red';
                         checkDiv.querySelector('span').innerHTML = 'username was already taken&#10060;';
                         checkAll.username = 0;
-                    };
+                    }
                 });
             } else {
                 checkDiv.querySelector('img').style.display = 'none';
@@ -88,27 +99,31 @@
                 checkDiv.querySelector('span').className = 'red';
                 checkDiv.querySelector('span').innerHTML = 'username is invalid&#10060;';
                 checkAll.username = 0;
-            };
+            }
 
         } else {
             usernameInp.setAttribute('style', 'border-color: tomato;');
             checkDiv.querySelector('span').innerText = '';
             checkAll.username = 0;
-        };
+        }
 
         updateSubmitState();
-    };
+    }
 
+    // Initial username validation if there's a value present
     if (usernameInp.value){
         checkUsername();
-    };
+    }
 
-    usernameInp.addEventListener('input', function(){
+    // Event listener for validating username upon input
+    usernameInp.addEventListener('input', () => {
         setTimeout(checkUsername, 50);
     });
 
+    // Function to validate email input
     function checkEmail(){
         if ( /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email.value)){
+            // Check if email already exists in database
             fetch(window.checkUserEmail, {
                 method: 'POST',
                 body: JSON.stringify({
@@ -130,7 +145,7 @@
                     checkAll.email = 1;
                 } else {
                     emailSpan.className = 'red';
-                    emailSpan.innerHTML = 'Email was already taken&#10060';
+                    emailSpan.innerHTML = 'Email was already taken&#10060;';
                     email.style.borderColor = 'tomato';
                     checkAll.email = 0;
                 };
@@ -144,14 +159,20 @@
         updateSubmitState();
     };
 
+    // Event listener for validating email upon input
     email.addEventListener('input', checkEmail);
 
+    // Initial email validation if there's a value present
     if (email.value){
         checkEmail();
     };
 
-    passwordInp.addEventListener('input', function(){
-        let redBorder = 0
+    // Event listener for validating password upon input
+    passwordInp.addEventListener('input', () => {
+        let redBorder = 0;
+        
+        // Password must include lowercase letters, uppercase letters, numbers
+        // and a symbol with no white space and at least 8 characters long
         if (/[a-z]/.test(passwordInp.value)){
             document.getElementById('lc').className = 'passed';
         } else {
@@ -205,7 +226,8 @@
         updateSubmitState();
     });
 
-    rePassword.addEventListener('input', function(){
+    // Event listener for validaing re-entered password upon input
+    rePassword.addEventListener('input', () => {
         if (passwordInp.value == rePassword.value){
             rePassword.style.borderColor = 'green';
             document.querySelector('.not-matching').style.display = 'none';
@@ -219,9 +241,10 @@
         updateSubmitState();
     });
 
-    document.querySelector('form.center-form').addEventListener('submit', function(event){
+    // Event listener for form submission
+    document.querySelector('form.center-form').addEventListener('submit', event => {
         if (Object.values(checkAll).includes(0)){
             event.preventDefault();
         };
     });
-})()
+})();

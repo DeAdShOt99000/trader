@@ -86,7 +86,7 @@ body {
     text-shadow: 1px 1px white;
 }
 
-.each-chat:hover .contact-logo-cont {
+.each-contact:hover .contact-logo-cont {
     outline: 1.5px solid black;
     color: white;
     text-shadow: 1px 1px black;
@@ -113,7 +113,7 @@ body {
     text-shadow: 1px 1px 2px #7eccf0a8;
 }
 
-.each-chat:hover .contact-chat {
+.each-contact:hover .contact-chat {
     text-shadow: 1px 1px white;
 }
 
@@ -121,24 +121,24 @@ body {
     color: gray;
 }
 
-.each-chat:hover .contact-user {
+.each-contact:hover .contact-user {
     color: #064789;
 }
 
-.each-chat{
+.each-contact{
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 6px;
     position: relative;
 }
 
-.each-chat:hover {
+.each-contact:hover {
     cursor: pointer;
     border-radius: 10px;
     background-color: #7eccf06b;
 }
 
-.each-chat .related-item {
+.each-contact .related-item {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -146,18 +146,18 @@ body {
     max-width: 450px;
 }
 
-.each-chat .related-item span {
+.each-contact .related-item span {
     color: rgba(128, 128, 128, 0.836);
 }
 
-.each-chat .related-item a {
+.each-contact .related-item a {
     text-decoration: none;
     font-weight: bolder;
     color: black;
     text-shadow: 1px 1px white;
 }
 
-.each-chat .related-item a:hover {
+.each-contact .related-item a:hover {
     text-decoration: underline;
 }
 

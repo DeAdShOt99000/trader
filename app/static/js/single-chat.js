@@ -67,6 +67,7 @@
     // Variables for tracking unread messages
     let unReadPosition;
     let unReadNumber;
+    
     let chat;
     let firstLoad = true;
 
