@@ -1,22 +1,28 @@
 (function(){
     'use strict';
-    
-    const chatBox = document.getElementById('chat-box');
-    const toBottomBtn = document.getElementById('to-bottom-btn');
-    const toBottomBtnCont = document.getElementById('to-bottom-btn-container');
-    const msgCircle = document.getElementById('msg-circle');
 
+    // Get DOM elements
+    const chatBox = document.getElementById('chat-box'); // Chat container
+    const toBottomBtn = document.getElementById('to-bottom-btn'); // Button to scroll to bottom
+    const toBottomBtnCont = document.getElementById('to-bottom-btn-container'); // Container for scroll to bottom button
+    const msgCircle = document.getElementById('msg-circle'); // Unread messages circle
+
+    // Scroll to the bottom of the chat box when the "scroll to bottom" button is clicked
     toBottomBtn.onclick = function(){
         chatBox.scrollTop = chatBox.scrollHeight;
     };
     
+    // Send message when the "Send" button is clicked
     document.getElementById('send').addEventListener('click', function(){
+        // Create a text message object with message content and item ID
         const textMessage = {
             'text-message': document.getElementById('text-message').value,
             'item-id': window.itemId
         };
 
+        // Check if the message is not empty
         if (textMessage['text-message'] != ''){
+            // Send the message using fetch API
             fetch(window.sendMsgLink, {
                 method: 'POST',
                 headers: {
@@ -25,21 +31,24 @@
                 },
                 body: JSON.stringify(textMessage)
             });
+            // Clear the input field after sending the message
             document.getElementById('text-message').value = '';
         };
     });
 
+    // Focus on the message input field
     const messageInp = document.getElementById('text-message');
-
     messageInp.focus()
 
+    // Send message when Enter key is pressed
     messageInp.addEventListener('keydown', function(event){
         if (event.key == 'Enter') {
             document.getElementById('send').click();
             document.getElementById('text-message').value = '';
         };
     });
-    
+
+    // Function to mark messages as viewed
     function tagAsViewed(lst){
         fetch(window.tagAsViewedLink, {
             method: 'POST',
@@ -51,46 +60,61 @@
         });
     };
 
+    // Create an element to show number of unread messages
     const unRead = document.createElement('div');
     unRead.setAttribute('id', 'unread');
 
+    // Variables for tracking unread messages
     let unReadPosition;
     let unReadNumber;
     let chat;
     let firstLoad = true;
 
+    // Array to store message IDs
     const idsLst = [];
 
+    // Variable to store the last message ID
     let last_msg_id = -2;
+
+    // Function to update messages and handle unread messages
     function updateMsg(){
         let last_msg_id_link = `?last-msg-id=${last_msg_id}`;
 
+        // Check if there is an item ID, add it to the API request
         if (window.itemId){
             last_msg_id_link += `&item-id=${window.itemId}`;
         };
 
+        // Fetch new messages from the server
         fetch(window.chatJson + last_msg_id_link)
         .then(response => response.json())
         .then(data => {
+            // Get the ID of the last message from the server
             const last_msg_id_server = data[Object.values(data).length-1] ? data[Object.values(data).length-1]['id']: -1;
+
+            // Check if there are new messages
             if (last_msg_id_server != 'same'){
                 last_msg_id = last_msg_id_server;
                 chatBox.innerHTML = '';
-    
+
+                // Check if there are messages in the response
                 if (Object.values(data).length > 0){
                     const dateList = [];
+                    // Loop through the messages
                     for (let i in data){
                         chat = data[i];
 
+                        // Check for unread messages and add their IDs to the list
                         if (!chat.viewed && !idsLst.includes(chat.id) && chat.sent_by == window.contactId){
                             idsLst.push(chat.id);
                         };
-        
+
+                        // Create DOM elements for each message
                         const chatElementContainer = document.createElement('div');
                         chatElementContainer.setAttribute('class', 'chat-text-container');
-         
                         const chatElement = document.createElement('div');
-                        
+
+                        // Check if the message is related to an item and add a link to the item
                         if (chat.item_id){
                             const itemTitleElement = document.createElement('a');
                             itemTitleElement.setAttribute('href', `/${chat.item_id}/`);
@@ -99,7 +123,7 @@
 
                             chatElement.appendChild(itemTitleElement);
                         };
-                        
+
                         const chatText = document.createElement('div');
                         chatText.innerText = chat.text;
                         chatText.className = 'text';
@@ -107,13 +131,15 @@
                         const chatTime = document.createElement('div');
                         chatTime.innerText = chat.time;
                         chatTime.className = 'time';
-                        
+
+                        // Determine sender/receiver and apply appropriate styles
                         if (chat.sent_by == window.userId){
                             chatElement.className = 'sender chat-text';
                         } else {
                             chatElement.className = 'receiver chat-text';
                         };
-        
+
+                        // Check if the message date is already displayed, if not, add it
                         if (!dateList.includes(chat.date)){
                             const dateContainer = document.createElement('div');
                             dateContainer.className = 'date-container';
@@ -128,17 +154,20 @@
                             
                             dateList.push(chat.date);
                         };
-                        
+
+                        // Append message elements to the chat box
                         chatElement.appendChild(chatText);
                         chatElement.appendChild(chatTime);
                         chatElementContainer.appendChild(chatElement);
                         chatBox.appendChild(chatElementContainer);
 
+                        // Calculate position of unread message circle
                         if (idsLst.length == 1){
                             unReadPosition = Array.from(chatBox.children).indexOf(chatElementContainer);
                         };
                     };
-                    
+
+                    // Display unread messages and mark them as viewed
                     unReadNumber = idsLst.length;
                     if (unReadNumber && firstLoad){
                         if (unReadNumber > 1){
@@ -170,15 +199,18 @@
                     firstLoad = false;
 
                 } else {
+                    // Text to show if there is no message history
                     chatBox.innerHTML = '<div class="send-first-msg">--- Send The First Message! ---</div>';
                 };
             };
-                    
+
+            // Call the function recursively after a delay
             setTimeout(updateMsg, 1500);
 
         });
     };
 
+    // Event listner for displaying and hiding to-bottom-btn
     chatBox.addEventListener('scroll', function(){
         if (chatBox.scrollHeight - 15 > chatBox.clientHeight + chatBox.scrollTop){
             toBottomBtnCont.style.display = 'block';
