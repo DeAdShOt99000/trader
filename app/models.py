@@ -4,17 +4,19 @@ from flask_login import UserMixin
 
 from . import db, default_image
 
-# Association Table for self-referential many-to-many relationship
+# Association table for self-referential many-to-many relationship.
 user_contacts = db.Table('user_contacts',
     db.Column('contact_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
     db.Column('contacted_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
 )
 
+# Association table that connects users with items for 'favourite' functionality.
 favourite_items = db.Table('favourite_items',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
     db.Column('item_id', db.Integer, db.ForeignKey('item.id'), primary_key=True),
 )
 
+# User table for storing users.
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column(db.String(50), nullable=False)
@@ -33,7 +35,8 @@ class User(db.Model, UserMixin):
                                backref=db.backref('contacted_by', lazy='dynamic'),
                                lazy='dynamic')
     favourites = db.relationship('Item', secondary=favourite_items, backref=db.backref('fav_users', lazy='dynamic'))
-        
+
+# Item table for storing items.
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -47,13 +50,15 @@ class Item(db.Model):
     
     images = db.relationship('Image', backref='images_set', lazy=True)
     chats = db.relationship('Chat', backref='chats_set', lazy=True)
-    
+
+# Image table for storing items images.
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image = db.Column(db.LargeBinary, default=BytesIO(default_image).read())
     
     item_id = db.Column(db.Integer, db.ForeignKey("item.id"), nullable=False)
-    
+
+# Chat table for storing chats.
 class Chat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.Text)

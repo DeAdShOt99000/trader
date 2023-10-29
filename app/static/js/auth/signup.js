@@ -50,33 +50,45 @@
 
         function checkUsername(){
             if (usernameInp.value.length > 0){
-                checkDiv.querySelector('img').style.display = 'inline'
-                fetch(window.checkUserEmail, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        username: usernameInp.value
-                    }),
-                    headers: {
-                        'Content-type': 'application/json',
-                        'X-CSRFToken': window.csrf
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    checkDiv.querySelector('img').style.display = 'none'
-                    const msg = data['message']
-                    if (msg){
-                        usernameInp.setAttribute('style', 'border-color: green;')
-                        checkDiv.querySelector('span').className = 'green'
-                        checkDiv.querySelector('span').innerHTML = 'Username is available&#9989;'
-                        checkAll.username = 1
-                    } else {
-                        usernameInp.setAttribute('style', 'border-color: tomato;')
-                        checkDiv.querySelector('span').className = 'red'
-                        checkDiv.querySelector('span').innerHTML = 'username was already taken&#10060;'
-                        checkAll.username = 0
-                    }
-                })
+                checkDiv.querySelector('img').style.display = 'inline';
+
+                const validUsername = /^[a-zA-Z0-9_-]{3,16}$/;
+
+                if (validUsername.test(usernameInp.value)) {
+                    fetch(window.checkUserEmail, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            username: usernameInp.value
+                        }),
+                        headers: {
+                            'Content-type': 'application/json',
+                            'X-CSRFToken': window.csrf
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        checkDiv.querySelector('img').style.display = 'none';
+                        const msg = data['message'];
+                        if (msg){
+                            usernameInp.setAttribute('style', 'border-color: green;');
+                            checkDiv.querySelector('span').className = 'green';
+                            checkDiv.querySelector('span').innerHTML = 'Username is available&#9989;';
+                            checkAll.username = 1;
+                        } else {
+                            usernameInp.setAttribute('style', 'border-color: tomato;');
+                            checkDiv.querySelector('span').className = 'red';
+                            checkDiv.querySelector('span').innerHTML = 'username was already taken&#10060;';
+                            checkAll.username = 0;
+                        };
+                    });
+                } else {
+                    checkDiv.querySelector('img').style.display = 'none';
+                    usernameInp.setAttribute('style', 'border-color: tomato;');
+                    checkDiv.querySelector('span').className = 'red';
+                    checkDiv.querySelector('span').innerHTML = 'username is invalid&#10060;';
+                    checkAll.username = 0;
+                };
+
             } else {
                 usernameInp.setAttribute('style', 'border-color: tomato;')
                 checkDiv.querySelector('span').innerText = ''

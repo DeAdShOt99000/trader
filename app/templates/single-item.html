@@ -15,7 +15,7 @@
             <button class="delete-btn" onclick="window.location.href = `{{ url_for('delete_item', item_id=item.id) }}?next={{ url_for('index') }}`">Delete</button>
         </div>
         {% else %}
-        <button class="chat-btn" onclick="window.location.href = `{{ url_for('single_chat', user_id=seller.id) }}?next=/{{ item.id }}/&item-id={{ item.id }}`">Chat</button>
+        <button class="chat-btn" onclick="window.location.href = `{{ url_for('single_chat', user_id=seller.id) }}?back=/{{ item.id }}/&item-id={{ item.id }}`">Chat</button>
         <button class="favourite-btn {% if is_favourite %}fav{% endif %}" onclick="toggleFavourite()">
             <svg
             width="25"

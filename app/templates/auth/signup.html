@@ -42,7 +42,7 @@
                 {% if form.username.errors %}
                     <ul>
                         {% for err in form.username.errors %}
-                        <li class="red-warning invalid"><li>{{ err }}</li>
+                        <li class="red-warning invalid">{{ err }}</li>
                         {% endfor %}
                     </ul>
                 {% endif %}

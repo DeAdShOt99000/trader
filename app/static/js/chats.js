@@ -31,36 +31,37 @@
     
                         const contactLogoCont = document.createElement('div');
                         contactLogoCont.className = 'friend-logo-cont';
-                        contactLogoCont.setAttribute('style', `background-color: #${contact.user_color}`)
+                        contactLogoCont.setAttribute('style', `background-color: #${contact.profile_color}`)
     
                         const contactLogo = document.createElement('div');
                         contactLogo.className = 'friend-logo';
                         contactLogo.innerText = contact.firstname.substring(0, 1) + contact.lastname.substring(0, 1);
                             
                         const contactChat = document.createElement('span');
-                        contactChat.setAttribute('class', 'friend-chat')
-                        contactChat.setAttribute('id', 'fc-'+contact.id)
+                        contactChat.id = 'fc-' + contact.id;
+                        contactChat.className = 'friend-chat';
+                        contactChat.title = contact.email;
                         contactChat.innerText = `${contact.firstname} ${contact.lastname}`;
         
                         const contactUser = document.createElement('span');
-                        contactUser.setAttribute('class', 'friend-user')
-                        contactUser.setAttribute('id', 'pe-'+contact.id)
+                        contactUser.id = 'pe-' + contact.id;
+                        contactUser.className = 'friend-user';
                         contactUser.innerText = '@' + contact.username;
         
                         const msgCircle = document.createElement('div');
-                        msgCircle.setAttribute('class', 'msg-circle');
+                        msgCircle.className = 'msg-circle';
                         
                         if (contact.not_viewed){
                             msgCircle.innerText = contact.not_viewed;
                             msgCircle.style.display = 'block';
                         };
         
-                        contactLogoCont.appendChild(contactLogo)
+                        contactLogoCont.appendChild(contactLogo);
     
-                        contactChatCont.appendChild(contactLogoCont)
-                        contactChatCont.appendChild(contactChat)
-                        contactChatCont.appendChild(contactUser)
-                        eachChat.appendChild(contactChatCont)
+                        contactChatCont.appendChild(contactLogoCont);
+                        contactChatCont.appendChild(contactChat);
+                        contactChatCont.appendChild(contactUser);
+                        eachChat.appendChild(contactChatCont);
 
                         if (contact.item){
                             const relatedItem = document.createElement('div');
@@ -69,15 +70,15 @@
                             eachChat.appendChild(relatedItem);
                         };
         
-                        eachChat.appendChild(msgCircle)
-                        chats.appendChild(eachChat)
+                        eachChat.appendChild(msgCircle);
+                        chats.appendChild(eachChat);
     
                     }
                 } else {
                     const noContacts = document.createElement('h3');
                     noContacts.innerText = 'No available contacts';
-                    noContacts.setAttribute('id', 'no-friends')
-                    chats.appendChild(noContacts)
+                    noContacts.id = 'no-friends';
+                    chats.appendChild(noContacts);
                 };
             };
 
