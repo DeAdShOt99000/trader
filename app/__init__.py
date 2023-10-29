@@ -1,7 +1,7 @@
 import os
 from datetime import datetime, timedelta
 
-from flask import Flask
+from flask import Flask, render_template
 from flask_wtf.csrf import CSRFProtect
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -58,5 +58,15 @@ app.jinja_env.globals.update(date_format=date_format)
 
 with open(os.path.join(basedir, "static\\img\\default_image.jpg"), "rb") as di:
     default_image = di.read()
+    
+@app.errorhandler(404)
+def page_not_found(error):
+    print(type(error))
+    return render_template('error.html', error=error), 404
+
+@app.errorhandler(500)
+def page_not_found(error):
+    print(type(error))
+    return render_template('error.html', error=error), 500
 
 from app import routes, auth

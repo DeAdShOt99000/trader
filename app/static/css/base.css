@@ -136,6 +136,7 @@ nav .location {
     transition: background-color .2s ease-out;
     cursor: pointer;
     width: fit-content;
+    min-width: 100px;
 }
 
 .user-card-cont:hover {
@@ -203,16 +204,17 @@ nav .location {
 
 .success-message {
     position: absolute;
-    top: 50px;
+    top: 30px;
     left: 50%;
     transform: translateX(-50%);
     background-color: lightgreen;
     border: 3px solid green;
-    border-radius: 10px;
+    border-radius: 20px;
     color: green;
     font-weight: bolder;
     text-align: center;
     padding: 7px 10px;
-    transition: opacity 1.5s;
+    transition: opacity 0.5s, top 0.3s ease-out;
     z-index: 2;
+    opacity: 0;
 }

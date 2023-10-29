@@ -138,6 +138,29 @@ body {
     background-color: #7eccf06b;
 }
 
+.each-chat .related-item {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 15px;
+    max-width: 450px;
+}
+
+.each-chat .related-item span {
+    color: rgba(128, 128, 128, 0.836);
+}
+
+.each-chat .related-item a {
+    text-decoration: none;
+    font-weight: bolder;
+    color: black;
+    text-shadow: 1px 1px white;
+}
+
+.each-chat .related-item a:hover {
+    text-decoration: underline;
+}
+
 .msg-circle {
     position: absolute;
     display: block;

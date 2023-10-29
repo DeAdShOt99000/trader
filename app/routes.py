@@ -4,7 +4,7 @@ from cryptography.fernet import Fernet
 
 from flask import render_template, request, redirect, url_for, send_file, abort, flash
 from flask_login import current_user, login_required
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 
 from app import app, db, login_manager
 from app.models import User, Item, Image, Chat
@@ -26,7 +26,7 @@ def serve_image(img_id):
 
 @app.get("/")
 def index():
-    items = Item.query.all()
+    items = sorted(Item.query.all(), key=lambda x: x.created_at, reverse=True)
     return render_template("index.html", items=items)
 
 @app.route("/sell", methods=("GET", "POST"))
@@ -58,6 +58,7 @@ def sell():
         
         db.session.add(image)
         db.session.commit()
+        flash("Item was added successfully!", 'success')
         return redirect(url_for("my_items"))
         
     return render_template("sell.html", form=form)
@@ -94,37 +95,36 @@ def chats_json():
     my_contacts = set(current_user.contacts.all() + current_user.contacted_by.all())
     chat_set = current_user.received_chat
     
-    contacts_dict_lst = []
-    for contact in my_contacts:
-        contact_chat = list(filter(lambda c: c.sent_by == contact.id, chat_set))
-        try:
-            last_msg_details = contact_chat[-1]
-            last_msg = (cipher.decrypt(last_msg_details.text).decode(), last_msg_details.sent_at, last_msg_details.id)
-        except:
-            last_msg = ('', datetime(1, 1, 1), -1)
-            
-        try:
+    if my_contacts:
+        contacts_dict_lst = []
+        for contact in my_contacts:
+            contact_chat = list(filter(lambda c: c.sent_by == contact.id, chat_set))
+
+            general_last_chat = Chat.query.filter(or_(and_(Chat.sent_by == current_user.id, Chat.received_by == contact.id), and_(Chat.sent_by == contact.id, Chat.received_by == current_user.id))).order_by(Chat.sent_at.desc()).all()[0]
+            general_item = {'item_id': general_last_chat.item_id, 'item_title': Item.query.get(general_last_chat.item_id).title} if general_last_chat.item_id else None
+            general_last_msg = (cipher.decrypt(general_last_chat.text).decode(), general_last_chat.sent_at, general_last_chat.id)
+                
             not_viewed = len(list(filter(lambda c: c.viewed == False, contact_chat)))
-        except IndexError:
-            not_viewed = None
             
-        clean_contact_dict = {
-            'id': contact.id,
-            'username': contact.username,
-            'firstname': contact.firstname.title(),
-            'lastname': contact.lastname.title(),
-            'email': contact.email,
-            'not_viewed': not_viewed, # The number of unviewed messages
-            'last_msg': last_msg, # Last message's text, time and id
-            'user_color': contact.profile_color
-        }
+            clean_contact_dict = {
+                'id': contact.id,
+                'username': contact.username,
+                'firstname': contact.firstname.title(),
+                'lastname': contact.lastname.title(),
+                'email': contact.email,
+                'not_viewed': not_viewed, # The number of unviewed messages
+                'last_msg': general_last_msg, # Last message's text, time and id
+                'item': general_item,
+                'user_color': contact.profile_color
+            }
+            
+            contacts_dict_lst.append(clean_contact_dict)
+        sorted_lst = sorted(contacts_dict_lst, key=lambda c: c['last_msg'][1], reverse=True)
         
-        contacts_dict_lst.append(clean_contact_dict)
-    sorted_lst = sorted(contacts_dict_lst, key=lambda f: f['last_msg'][1].date(), reverse=True)
-    
-    if sorted_lst[0]['last_msg'][2] != int(request.args.get('last-msg-id')):
-        return sorted_lst
-    return {'last_msg': 'same'}
+        if sorted_lst[0]['last_msg'][2] != int(request.args.get('last-msg-id')):
+            return sorted_lst
+        return {'last_msg': 'same'}
+    return {}
     
 @app.route("/chat/<int:user_id>", methods=('GET', 'POST'))
 @login_required
