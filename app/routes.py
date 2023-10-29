@@ -8,7 +8,7 @@ from sqlalchemy import or_, and_
 
 from app import app, db, login_manager
 from app.models import User, Item, Image, Chat
-from app.forms import Sell
+from app.forms import SellEdit
 from app.my_functions import formatted_dt
 
 
@@ -29,7 +29,7 @@ def serve_image(img_id):
 # Index page that shows all items - Login not required
 @app.get("/")
 def index():
-    items = sorted(Item.query.all(), key=lambda x: x.created_at, reverse=True)
+    items = Item.query.order_by(Item.created_at.desc()).all()
     return render_template("index.html", items=items)
 
 @app.route("/sell", methods=("GET", "POST"))
@@ -47,7 +47,7 @@ def sell():
             
             - If the form contains invalid data: Redirects the user to the same page with flash messages that shows the invalid fields.
     '''
-    form = Sell()
+    form = SellEdit()
     
     if form.validate_on_submit():
         item = Item(
@@ -117,17 +117,17 @@ def single_item(item_id):
         is_favourite = False
     return render_template("single-item.html", items=items, item=item, seller=seller, is_favourite=is_favourite)
 
-@app.get("/chats")
+@app.get("/all-contacts")
 @login_required
-def chats():
+def all_contacts():
     '''
-    Route that shows all chats - Login required
+    Route that shows all contacts - Login required
     '''
-    return render_template("chats.html")
+    return render_template("all-contacts.html")
 
-@app.get("/chats/chats-json")
+@app.get("/all-contacts/all-contacts-json")
 @login_required
-def chats_json():
+def all_contacts_json():
     '''
     A route that returns all contacts in JSON format - Login required
     
@@ -295,7 +295,7 @@ def my_items():
     '''
     Route that shows all of the current user's items - Login required
     '''
-    items = Item.query.filter_by(owner=current_user.id).all()
+    items = Item.query.filter_by(owner=current_user.id).order_by(Item.created_at.desc()).all()
     return render_template('my-items.html', items=items)
 
 @app.get("/favourites")
@@ -350,7 +350,7 @@ def edit_item(item_id):
         page with flash messages that shows the invalid fields.
     '''
     item = Item.query.filter_by(id=item_id, owner=current_user.id).first_or_404()
-    form = Sell(obj=item)
+    form = SellEdit(obj=item)
     
     if form.validate_on_submit():
         form.populate_obj(item)

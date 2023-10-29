@@ -7,8 +7,10 @@ from app.models import User
 from app.forms import SignUp, LogIn
 from app import app, bcrypt, db
 
+# Dictionary to map first letters of names to profile colors
 profile_colors = {'a': '6290C8', 'b': '9ECE9A', 'c': '5D4E6D', 'd': '9B9ECE', 'e': 'FFAD05', 'f': 'D8315B', 'g': '60D394', 'h': 'C287E8', 'i': 'C0BDA5', 'j': 'CC978E', 'k': '03254E', 'l': '5E2BFF', 'm': 'A1683A', 'n': '499F68', 'o': '2E5EAA', 'p': 'E1CE7A', 'q': '48A9A6', 'r': '957FEF', 's': 'D78521', 't': '92140C', 'u': 'CDDFA0', 'v': '73C2BE', 'w': 'F7CB15', 'x': '878E88', 'y': '14453D', 'z': '48BEFF'}
 
+# Route for handling user login
 @app.route("/auth/login", methods=("GET", "POST"))
 def login():
     if not current_user.is_authenticated:
@@ -34,6 +36,7 @@ def login():
     else:
         return redirect(url_for("index"))
 
+# Route for handling user registration
 @app.route("/auth/signup", methods=("GET", "POST"))
 def signup():
     if not current_user.is_authenticated:
@@ -62,11 +65,13 @@ def signup():
     else:
         return redirect(url_for("index"))
 
+# Route for user logout
 @app.get("/auth/logout")
 def logout():
     logout_user()
     return redirect(url_for("index"))
 
+# Route for checking if the provided username or email is already in the database
 @app.post("/auth/signup/check-user-email")
 def check_user_email():
     data = request.json

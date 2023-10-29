@@ -15,8 +15,9 @@
             'text-message': document.getElementById('text-message').value,
             'item-id': window.itemId
         };
+
         if (textMessage['text-message'] != ''){
-            fetch('', {
+            fetch(window.sendMsgLink, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -34,7 +35,7 @@
 
     messageInp.addEventListener('keydown', function(event){
         if (event.key == 'Enter') {
-            document.getElementById('send').click()
+            document.getElementById('send').click();
             document.getElementById('text-message').value = '';
         };
     });
@@ -62,10 +63,12 @@
 
     let last_msg_id = -2;
     function updateMsg(){
-        let last_msg_id_link = `?last-msg-id=${last_msg_id}`
+        let last_msg_id_link = `?last-msg-id=${last_msg_id}`;
+
         if (window.itemId){
-            last_msg_id_link += `&item-id=${window.itemId}`
-        }
+            last_msg_id_link += `&item-id=${window.itemId}`;
+        };
+
         fetch(window.chatJson + last_msg_id_link)
         .then(response => response.json())
         .then(data => {
@@ -79,7 +82,7 @@
                     for (let i in data){
                         chat = data[i];
 
-                        if (!chat.viewed && !idsLst.includes(chat.id) && chat.sent_by == window.friendId){
+                        if (!chat.viewed && !idsLst.includes(chat.id) && chat.sent_by == window.contactId){
                             idsLst.push(chat.id);
                         };
         
@@ -89,34 +92,34 @@
                         const chatElement = document.createElement('div');
                         
                         if (chat.item_id){
-                            const itemTitleElement = document.createElement('a')
-                            itemTitleElement.setAttribute('href', `/${chat.item_id}/`)
-                            itemTitleElement.classList.add('item-link')
-                            itemTitleElement.innerHTML = "<span>Item: </span>" + chat.item_title
+                            const itemTitleElement = document.createElement('a');
+                            itemTitleElement.setAttribute('href', `/${chat.item_id}/`);
+                            itemTitleElement.classList.add('item-link');
+                            itemTitleElement.innerHTML = "<span>Item: </span>" + chat.item_title;
 
-                            chatElement.appendChild(itemTitleElement)
-                        }
+                            chatElement.appendChild(itemTitleElement);
+                        };
                         
                         const chatText = document.createElement('div');
                         chatText.innerText = chat.text;
-                        chatText.setAttribute('class', 'text');
+                        chatText.className = 'text';
                         
                         const chatTime = document.createElement('div');
                         chatTime.innerText = chat.time;
-                        chatTime.setAttribute('class', 'time');
+                        chatTime.className = 'time';
                         
                         if (chat.sent_by == window.userId){
-                            chatElement.setAttribute('class', 'sender chat-text');
+                            chatElement.className = 'sender chat-text';
                         } else {
-                            chatElement.setAttribute('class', 'receiver chat-text');
+                            chatElement.className = 'receiver chat-text';
                         };
         
                         if (!dateList.includes(chat.date)){
                             const dateContainer = document.createElement('div');
-                            dateContainer.setAttribute('class', 'date-container');
+                            dateContainer.className = 'date-container';
                             
                             const dateElement = document.createElement('span');
-                            dateElement.setAttribute('class', 'date');
+                            dateElement.className = 'date';
                             
                             dateElement.innerText = chat.date;
                             
@@ -142,45 +145,49 @@
                             unRead.innerText = '** ' + unReadNumber + ' unread messages **';
                         } else {
                             unRead.innerText = '** ' + unReadNumber + ' unread message **';
-                        }
-                        tagAsViewed(idsLst)
+                        };
+
+                        tagAsViewed(idsLst);
                         idsLst.length = 0;
 
                         chatBox.insertBefore(unRead, chatBox.children[unReadPosition]);
                         unRead.scrollIntoView();
                     } else if (unReadNumber){
-                        tagAsViewed(idsLst)
+                        tagAsViewed(idsLst);
+
                         msgCircle.innerText = parseInt(msgCircle.innerText) + 1;
                         msgCircle.style.display = 'block';
                         idsLst.length = 0;
+
                         if (toBottomBtnCont.style.display != 'block'){
                             chatBox.scrollTop = chatBox.scrollHeight;
-                        }
+                        };
+
                     } else {
                         chatBox.scrollTop = chatBox.scrollHeight;
                     };
+
                     firstLoad = false;
 
                 } else {
                     chatBox.innerHTML = '<div class="send-first-msg">--- Send The First Message! ---</div>';
-                }
-            }
-                    
-            setTimeout(updateMsg, 1500)
-
-        })
-    }
-
-    window.onload = function(){
-        chatBox.addEventListener('scroll', function(){
-            if (chatBox.scrollHeight - 15 > chatBox.clientHeight + chatBox.scrollTop){
-                toBottomBtnCont.style.display = 'block';
-            } else {
-                toBottomBtnCont.style.display = 'none';
-                msgCircle.innerText = 0;
-                msgCircle.style.display = 'none';
+                };
             };
+                    
+            setTimeout(updateMsg, 1500);
+
         });
-        updateMsg()
     };
+
+    chatBox.addEventListener('scroll', function(){
+        if (chatBox.scrollHeight - 15 > chatBox.clientHeight + chatBox.scrollTop){
+            toBottomBtnCont.style.display = 'block';
+        } else {
+            toBottomBtnCont.style.display = 'none';
+            msgCircle.innerText = 0;
+            msgCircle.style.display = 'none';
+        };
+    });
+    
+    updateMsg();
 })()

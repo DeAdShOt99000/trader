@@ -62,7 +62,7 @@ body {
     padding: 10px;
 }
 
-.friend-chat-cont {
+.contact-chat-cont {
     display: grid;
     column-gap: 7px;
     grid-template-columns: auto 1fr;
@@ -70,11 +70,11 @@ body {
     /* width: fit-content; */
 }
 
-.friend-chat-cont .friend-logo-cont {
+.contact-chat-cont .contact-logo-cont {
     grid-row: 1 / span 2;
 }
 
-.friend-logo-cont {
+.contact-logo-cont {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,13 +86,13 @@ body {
     text-shadow: 1px 1px white;
 }
 
-.each-chat:hover .friend-logo-cont {
+.each-chat:hover .contact-logo-cont {
     outline: 1.5px solid black;
     color: white;
     text-shadow: 1px 1px black;
 }
 
-.friend-logo {
+.contact-logo {
     font-family: Amita;
 }
 
@@ -107,21 +107,21 @@ body {
     background-color: #8db530;
 }
 
-.friend-chat {
+.contact-chat {
     font-size: 1.5rem;
     color:black;
     text-shadow: 1px 1px 2px #7eccf0a8;
 }
 
-.each-chat:hover .friend-chat {
+.each-chat:hover .contact-chat {
     text-shadow: 1px 1px white;
 }
 
-.friend-user {
+.contact-user {
     color: gray;
 }
 
-.each-chat:hover .friend-user {
+.each-chat:hover .contact-user {
     color: #064789;
 }
 
@@ -178,8 +178,8 @@ body {
     display: none;
 }
 
-#no-friends {
+#no-contacts {
     position: absolute;
     z-index: -1;
-    padding: 5px;
+    padding: 5px 10px;
 }

@@ -70,6 +70,9 @@ def validate_extension(form, field):
 def formatted_dt(date_time: datetime):
     '''
     Takes a datetime object and returns a tuple with formatted date and time.
+    If the date is today, it returns ("Today", formatted_time).
+    If the date is yesterday, it returns ("Yesterday", formatted_time).
+    Otherwise, it returns (formatted_date, formatted_time).
     '''
     no_zero_hour = date_time.strftime("%I") if date_time.strftime("%I")[0] != '0' else date_time.strftime("%I")[1]
     formatted_time = date_time.strftime(f"{no_zero_hour}:%M %p")

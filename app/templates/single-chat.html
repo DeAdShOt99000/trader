@@ -10,7 +10,7 @@
 {% block content %}
 <div class="all-container">
     <div class="top-bar">
-        <a href="{% if back %}{{ back }}{% else %}{{ url_for('chats') }}{% endif %}" id="all-contacts">&#8592; Back</a>
+        <a href="{% if back %}{{ back }}{% else %}{{ url_for('all_contacts') }}{% endif %}" id="all-contacts">&#8592; Back</a>
         <div class="contact-card-cont">
             {% with current_user=contact %}
             {% include 'partials/user-card.html' %}
@@ -33,7 +33,8 @@
 <script>
     window.csrf = '{{ csrf_token() }}';
     window.userId = '{{ current_user.id }}';
-    window.friendId = '{{ contact.id }}';
+    window.contactId = '{{ contact.id }}';
+    window.sendMsgLink = "{{ url_for('single_chat', user_id=contact.id) }}";
     window.tagAsViewedLink = "{{ url_for('tag_as_viewed') }}";
     window.chatJson = "{{ url_for('chat_json', user_id=contact.id) }}";
     window.itemId = "{{ item_id }}" != "None" ? "{{ item_id }}": null;

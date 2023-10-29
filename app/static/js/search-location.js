@@ -78,7 +78,7 @@
 
     
     if (current_location){
-        location.querySelector(`.${current_location}`).setAttribute('selected', 'selected')
+        location.querySelector(`.${current_location}`).setAttribute('selected', 'selected');
         filterLocation();
     };
 

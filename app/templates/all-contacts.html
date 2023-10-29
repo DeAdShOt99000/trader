@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Trader Contacts{% endblock title %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/all-contacts.css') }}">
+    <script src="{{ url_for('static', filename='js/all-contacts.js') }}" defer></script>
+{% endblock head %}
+
+{% block content %}
+
+<h2 class="chat-title">Contacts</h2>
+
+<div id="all-contacts">
+    <img class="spinner" src="{{ url_for('static', filename='img/spinner.gif') }}" alt="loading...">
+</div>
+
+<script>
+    window.spinner = "{{ url_for('static', filename='img/spinner.gif') }}"
+    window.allContactsJsonLink = "{{ url_for('all_contacts_json') }}"
+</script>
+{% endblock content %}
