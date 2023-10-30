@@ -9,7 +9,7 @@ from sqlalchemy import or_, and_
 from app import app, db, login_manager
 from app.models import User, Item, Image, Chat
 from app.forms import SellEdit
-from app.my_functions import formatted_dt
+from app.my_functions import DateTimeFormat
 
 
 @login_manager.user_loader
@@ -254,14 +254,14 @@ def chat_json(user_id):
     ch_dict_lst = []
     if chat_history:
         for chat in chat_history:
-            date_time = formatted_dt(chat.sent_at)
+            date_time = DateTimeFormat(chat.sent_at)
             dict_entry = vars(chat)
             del dict_entry['_sa_instance_state']
             
             dict_entry.update({
                 'text': cipher.decrypt(dict_entry['text']).decode(),
-                'date': date_time[0],
-                'time': date_time[1],
+                'date': date_time.date_format(),
+                'time': date_time.time_format(),
                 'item_title': Item.query.get_or_404(dict_entry['item_id']).title if dict_entry['item_id'] else None,
             })
             ch_dict_lst.append(dict_entry)

@@ -65,20 +65,33 @@ def validate_extension(form, field):
         if ext not in allowed_extensions:
             raise ValidationError("File type not allowed")
         
-# Datetime formatting function for routes.py
-
-def formatted_dt(date_time: datetime):
+# Datetime formatting class for routes.py
+    
+class DateTimeFormat:
     '''
-    Takes a datetime object and returns a tuple with formatted date and time.
-    If the date is today, it returns ("Today", formatted_time).
-    If the date is yesterday, it returns ("Yesterday", formatted_time).
-    Otherwise, it returns (formatted_date, formatted_time).
+    A class that takes a datetime object and it includes methods for
+    formatting date and time.
+    
+    date_format method:
+        - returns one of the following:
+            If the date is today, it returns "Today".
+            If the date is yesterday, it returns "Yesterday".
+            Otherwise, it returns formatted date.
+    time_format method:
+        - return formatted time.
     '''
-    no_zero_hour = date_time.strftime("%I") if date_time.strftime("%I")[0] != '0' else date_time.strftime("%I")[1]
-    formatted_time = date_time.strftime(f"{no_zero_hour}:%M %p")
-    if date_time.date() == datetime.today().date():
-        return ("Today", formatted_time)
-    elif date_time.date() == (datetime.today().date() - timedelta(days=1)):
-        return ("Yesterday", formatted_time)
-    else:
-        return (date_time.strftime("%b %d, %Y"), formatted_time)
+    def __init__(self, date_time: datetime):
+        self.date_time = date_time
+        
+    def date_format(self):
+        if self.date_time.date() == datetime.today().date():
+            return "Today"
+        elif self.date_time.date() == (datetime.today().date() - timedelta(days=1)):
+            return "Yesterday"
+        else:
+            return self.date_time.strftime("%b %d, %Y")
+        
+    def time_format(self):
+        no_zero_hour = self.date_time.strftime("%I") if self.date_time.strftime("%I")[0] != '0' else self.date_time.strftime("%I")[1]
+        return self.date_time.strftime(f"{no_zero_hour}:%M %p")
+        
