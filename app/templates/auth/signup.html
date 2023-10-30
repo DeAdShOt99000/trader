@@ -99,7 +99,8 @@
     <h4 class="signup-login-switch">Already have an account? <a href="{{ url_for('login') }}{% if next %}?next={{ next }}{% endif %}">Log in!</a></h4>
 </form>
 <script>
-    window.csrf = '{{ form.csrf_token._value() }}'
-    window.checkUserEmail = "{{ url_for('check_user_email') }}"
+    // Variables for external JS file
+    window.csrf = '{{ form.csrf_token._value() }}'; // CSRF token
+    window.checkUserEmail = "{{ url_for('check_user_email') }}"; // Link for validating email
 </script>
 {% endblock %}

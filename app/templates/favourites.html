@@ -32,24 +32,34 @@
     </div>
     <div class='no-fav empty-pge' style="display: none;">No favourites, <a href="{{ url_for('index') }}">Browse all items!</a></div>
     <script>
+        // Select all elements with the class "favourite-btn" and the element with class "no-fav"
         const favouriteBtns = document.querySelectorAll('.favourite-btn');
         const noFav = document.querySelector('.no-fav');
 
-        if (favouriteBtns.length){
-            for (let fav of favouriteBtns){
-                fav.addEventListener('click', function(){
+        // Check if there are any favorite buttons found in the document
+        if (favouriteBtns.length) {
+            // Iterate over each favorite button
+            for (let fav of favouriteBtns) {
+                // Add a click event listener to each favorite button
+                fav.addEventListener('click', function() {
+                    // Extract the item ID from the favorite button's ID attribute
                     const itemId = this.id.split('-')[2];
-    
+
+                    // Make a fetch request to the server to remove the item from favorites
                     fetch(`/favourite-json/${itemId}`);
 
+                    // Remove the item element from the document with the corresponding item ID
                     document.querySelector(".items-cont").removeChild(document.getElementById(`item-${itemId}`));
 
-                    if (document.querySelector('.items-cont').children.length < 1){
+                    // Check if there are no more items in the items container
+                    if (document.querySelector('.items-cont').children.length < 1) {
+                        // If no items are left, display the element with class "no-fav"
                         noFav.style.display = 'block';
                     };
                 });
             };
         } else {
+            // If no favorite buttons are found, display the element with class "no-fav"
             noFav.style.display = 'block';
         };
     </script>

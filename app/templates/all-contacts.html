@@ -16,7 +16,8 @@
 </div>
 
 <script>
-    window.spinner = "{{ url_for('static', filename='img/spinner.gif') }}"
-    window.allContactsJsonLink = "{{ url_for('all_contacts_json') }}"
+    // Variables for external JS file
+    window.spinner = "{{ url_for('static', filename='img/spinner.gif') }}"; // Spinner gif
+    window.allContactsJsonLink = "{{ url_for('all_contacts_json') }}"; // Link for retrieving all contacts
 </script>
 {% endblock content %}

@@ -31,13 +31,14 @@
 </div>
 
 <script>
-    window.csrf = '{{ csrf_token() }}';
-    window.userId = '{{ current_user.id }}';
-    window.contactId = '{{ contact.id }}';
-    window.sendMsgLink = "{{ url_for('single_chat', user_id=contact.id) }}";
-    window.tagAsViewedLink = "{{ url_for('tag_as_viewed') }}";
-    window.chatJson = "{{ url_for('chat_json', user_id=contact.id) }}";
-    window.itemId = "{{ item_id }}" != "None" ? "{{ item_id }}": null;
+    // Variables for external JS file
+    window.csrf = '{{ csrf_token() }}'; // CSRF token
+    window.userId = '{{ current_user.id }}'; // User ID
+    window.contactId = '{{ contact.id }}'; // Contact ID
+    window.sendMsgLink = "{{ url_for('single_chat', user_id=contact.id) }}"; // Link for sending messages
+    window.tagAsViewedLink = "{{ url_for('tag_as_viewed') }}"; // Link for tagging messages as viewed
+    window.chatJson = "{{ url_for('chat_json', user_id=contact.id) }}"; // Link for retrieving chat history
+    window.itemId = "{{ item_id }}" != "None" ? "{{ item_id }}": null; // // Item ID
 </script>
 
 {% endblock content %}
