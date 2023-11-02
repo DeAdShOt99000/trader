@@ -11,6 +11,7 @@
 body {
     background-color: #B1DDF1;
     color: white;
+    height: 100vh;
 }
 
 nav {

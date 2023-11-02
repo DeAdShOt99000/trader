@@ -1,12 +1,11 @@
 body {
-    height: 100%;
     color: black;
 }
 
 .all-container {
     display: grid;
     grid-template-rows: auto 1fr auto;
-    height: 94vh;
+    height: 93%;
 }
 
 .top-bar {

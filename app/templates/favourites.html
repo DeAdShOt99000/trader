@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block title %} Trader - Favourites {% endblock %}
+
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/partials/item.css') }}">
     <script src="{{ url_for('static', filename='js/search-location.js') }}" defer></script>
@@ -31,6 +33,7 @@
         {% endfor %}
     </div>
     <div class='no-fav empty-pge' style="display: none;">No favourites, <a href="{{ url_for('index') }}">Browse all items!</a></div>
+
     <script>
         // Select all elements with the class "favourite-btn" and the element with class "no-fav"
         const favouriteBtns = document.querySelectorAll('.favourite-btn');

@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 
+{% block title %} Trader - My items {% endblock %}
+
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/partials/item.css') }}">
     <script src="{{ url_for('static', filename='js/search-location.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/edit-delete.js') }}" defer></script>
 {% endblock %}
 
 {% block nav_search %}nav-search{% endblock %}

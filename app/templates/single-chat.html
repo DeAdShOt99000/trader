@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% block title %}{{ contact.firstname|title }}'s Chat{% endblock title %}
+
+{% block title %}Trader - {{ contact.firstname|title }}'s Chat{% endblock title %}
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/single-chat.css') }}">

@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 
+{% block title %} Trader - {{ item.title }} {% endblock %}
+
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/partials/item.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/single-item.css') }}">
+    <script src="{{ url_for('static', filename='js/edit-delete.js') }}" defer></script>
 {% endblock %}
 {% block content %}
     <div class="grid-cont">
@@ -10,9 +13,9 @@
             <img src="{{ url_for('serve_image', img_id=item.images[0].id) }}" alt="item-image">
         </div>
         {% if current_user.id == seller.id %}
-        <div class="seller-btns">
-            <button class="edit-btn" onclick="window.location.href = `{{ url_for('edit_item', item_id=item.id) }}?next={{ url_for('single_item', item_id=item.id) }}`">Edit</button>
-            <button class="delete-btn" onclick="window.location.href = `{{ url_for('delete_item', item_id=item.id) }}?next={{ url_for('index') }}`">Delete</button>
+        <div class="seller-btns edit-delete">
+            <button class="edit-btn" id="edit-{{ item.id }}">Edit</button>
+            <button class="delete-btn" id="delete-{{ item.id }}">Delete</button>
         </div>
         {% else %}
         <button class="chat-btn" onclick="window.location.href = `{{ url_for('single_chat', user_id=seller.id) }}?back=/{{ item.id }}/&item-id={{ item.id }}`">Chat</button>
@@ -67,6 +70,9 @@
     </div>
     
 <script>
+
+    window.next = "?next={{ url_for('single_item', item_id=item.id) }}"
+
     // Select the favorite button element with the class "favourite-btn"
     const favouriteBtn = document.querySelector(".favourite-btn");
 

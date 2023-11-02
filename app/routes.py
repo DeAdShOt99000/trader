@@ -9,7 +9,7 @@ from sqlalchemy import or_, and_
 from app import app, db, login_manager
 from app.models import User, Item, Image, Chat
 from app.forms import SellEdit
-from app.my_functions import DateTimeFormat
+from app.datetime_format_class import DateTimeFormat
 
 
 @login_manager.user_loader
