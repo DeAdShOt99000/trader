@@ -92,7 +92,8 @@ nav .location {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    border: 2px dashed #064789;
+    /* border: 2px dashed #064789; */
+    background-color: #06478969;
     height: 35px;
     border-radius: 20px;
     margin: 5px 10px;
@@ -115,7 +116,7 @@ nav .location {
     height: 100%;
     width: 100%;
     text-align: center;
-    padding-top: 6px;
+    padding: 8px;
 }
 
 .all-links .nav-link:hover {
