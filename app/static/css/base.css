@@ -124,6 +124,24 @@ nav .location {
     transition: background-color .2s ease-out;
 }
 
+.unread-msgs {
+    display: none;
+    position: relative;
+    bottom: 2px;
+    background-color: #064789;
+    border-radius: 50%;
+    font-size: 0.6rem;
+    width: 20px;
+    height: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.all-links .nav-link:hover .unread-msgs {
+    background-color: white;
+    color: #064789;
+}
+
 .user-card-cont {
     position: relative;
     display: grid;

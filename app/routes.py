@@ -387,3 +387,15 @@ def delete_item(item_id):
         
     flash("Item was successfully deleted!", 'success')
     return redirect(next if next else url_for('my_items'))
+
+@app.get("/all-contacts/check-unread-json")
+@login_required
+def check_unread_json():
+    unread_chats = Chat.query.filter(Chat.received_by == current_user.id, Chat.viewed == False)
+    
+    exclude = request.args.get('exclude')
+    
+    if exclude:
+        unread_chats = unread_chats.filter(Chat.sent_by != exclude)
+        
+    return {"unread_chats": len(unread_chats.all())}

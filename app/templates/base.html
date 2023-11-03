@@ -6,6 +6,7 @@
     <title>{% block title %}Trader{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/partials/user-card.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <script src="{{ url_for('static', filename='js/base.js') }}" defer></script>
     {% block head %}
     {% endblock %}
@@ -21,7 +22,7 @@
 
                 <div class="all-links">
                     <a href="{{ url_for('sell') }}" class="nav-link">Sell</a>
-                    <a href="{{ url_for('all_contacts') }}" class="nav-link">Chats</a>
+                    <a href="{{ url_for('all_contacts') }}" class="nav-link">Chats <span class="unread-msgs"></span></a>
                     <a href="{{ url_for('my_items') }}" class="nav-link">My items</a>
                     <a href="{{ url_for('favourites') }}" class="nav-link">Favourites</a>
                 </div>
@@ -48,6 +49,37 @@
     {% endblock %}
 
     {% block content %}
+    {% endblock %}
+
+    {% block unread_msgs_script %}
+    {% if current_user.is_authenticated %}
+    <script>
+        (function(){
+            const unreadMsgs = document.querySelector('.unread-msgs');
+            
+            let sameResponse;
+            function checkUnread(){
+                fetch('/all-contacts/check-unread-json')
+                .then(response => response.json())
+                .then(data => {
+                if (sameResponse !== data['unread_chats']){
+                    if (data['unread_chats']){
+                        unreadMsgs.innerText = data['unread_chats'];
+                        unreadMsgs.style.display = 'inline-flex';
+                    } else {
+                        unreadMsgs.style.display = 'none';
+                    };
+                    sameResponse = data['unread_chats'];
+                };
+            });
+            
+            setTimeout(checkUnread, 3000);
+        };
+        
+        checkUnread();
+    })()
+    </script>
+    {% endif %}
     {% endblock %}
 </body>
 </html>

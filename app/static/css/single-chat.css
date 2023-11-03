@@ -47,6 +47,14 @@ body {
     opacity: 1;
 }
 
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+
+}
 
 #chat-box {
     position: relative;

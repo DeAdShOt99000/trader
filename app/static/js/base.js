@@ -16,4 +16,5 @@
             successMsg.style.opacity = 0;
         }, 2500);
     };
+
 })();

@@ -8,6 +8,7 @@
     const msgCircle = document.getElementById('msg-circle'); // Unread messages circle
     const cxtItemSelector = document.querySelector('.context-item-selector');
     const generalCxt = cxtItemSelector.querySelector('button');
+    const unreadMsgs = document.querySelector('.unread-msgs');
 
     // Scroll to the bottom of the chat box when the "scroll to bottom" button is clicked
     toBottomBtn.onclick = function(){
@@ -84,7 +85,13 @@
     let unReadPosition;
     let unReadNumber;
     
+    // Some variables declarations to avoid declaring them multiple times in the recursive function
     let chat;
+    let last_msg_id_link;
+    let last_msg_id_server;
+    let dateList;
+
+    // Variable for checking if the page was first loaded/ reloaded
     let firstLoad = true;
 
     // Array to store message IDs
@@ -93,11 +100,15 @@
     // Variable to store the last message ID
     let last_msg_id = -2;
 
+    // Array to store item IDs
     const itemIds = [];
+
+    // Variable for checking if the response was the same (for checking unread messages)
+    let sameResponse;
 
     // Function to update messages and handle unread messages
     function updateMsg(){
-        let last_msg_id_link = `?last-msg-id=${last_msg_id}`;
+        last_msg_id_link = `?last-msg-id=${last_msg_id}`;
 
         // Check if there is an item ID, add it to the API request
         if (window.itemId){
@@ -109,7 +120,7 @@
         .then(response => response.json())
         .then(data => {
             // Get the ID of the last message from the server
-            const last_msg_id_server = data[Object.values(data).length-1] ? data[Object.values(data).length-1]['id']: -1;
+            last_msg_id_server = data[Object.values(data).length-1] ? data[Object.values(data).length-1]['id']: -1;
 
             // Check if there are new messages
             if (last_msg_id_server != 'same'){
@@ -118,7 +129,7 @@
 
                 // Check if there are messages in the response
                 if (Object.values(data).length > 0){
-                    const dateList = [];
+                    dateList = [];
                     // Loop through the messages
                     for (let i in data){
                         chat = data[i];
@@ -204,7 +215,7 @@
                         };
                     };
 
-                    // Display unread messages and mark them as viewed
+                    // Display an indicator for unread messages and mark them as viewed
                     unReadNumber = idsLst.length;
                     if (unReadNumber && firstLoad){
                         if (unReadNumber > 1){
@@ -240,7 +251,22 @@
                     chatBox.innerHTML = '<div class="send-first-msg">--- Send The First Message! ---</div>';
                 };
             };
-
+            
+            // A fetch call that checks if there are any new messages outside the current chat
+            fetch(`/all-contacts/check-unread-json?exclude=${window.contactId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (sameResponse !== data['unread_chats']){
+                    if (data['unread_chats']){
+                        unreadMsgs.innerText = data['unread_chats'];
+                        unreadMsgs.style.display = 'inline-flex';
+                    } else {
+                        unreadMsgs.style.display = 'none';
+                    };
+                    sameResponse = data['unread_chats'];
+                };
+            });
+            
             // Call the function recursively after a delay
             setTimeout(updateMsg, 1500);
 

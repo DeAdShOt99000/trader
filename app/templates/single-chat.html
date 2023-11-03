@@ -18,7 +18,9 @@
             {% endwith %}
         </div>
     </div>
-    <div id="chat-box"></div>
+    <div id="chat-box">
+        <img class="spinner" src="{{ url_for('static', filename='img/spinner.gif') }}" alt="loading...">
+    </div>
     <div class="bottom">
         <div class="text-bar-cont">
             <div class="context-item-cont">
@@ -39,8 +41,10 @@
         </div>
     </div>
 </div>
+{% endblock content %}
 
-<script>
+{% block unread_msgs_script %}
+<script defer>
     // Variables for external JS file
     window.csrf = '{{ csrf_token() }}'; // CSRF token
     window.userId = '{{ current_user.id }}'; // User ID
@@ -50,7 +54,5 @@
     window.chatJson = "{{ url_for('chat_json', user_id=contact.id) }}"; // Link for retrieving chat history
     window.itemId = "{{ item_id }}" != "None" ? "{{ item_id }}": null; // // Item ID
 </script>
-
-{% endblock content %}
-    
+{% endblock %}    
     
