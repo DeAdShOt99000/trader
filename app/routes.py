@@ -176,6 +176,27 @@ def all_contacts_json():
             return sorted_lst
         return {'last_msg': 'same'}
     return {}
+
+@app.get("/all-contacts/check-unread-json")
+@login_required
+def check_unread_json():
+    '''
+    Route for checking if there are any new unread messages - Login required.
+    
+    It takes the id of the person whom you are currently chatting with as an optional
+    query parameter to ensure that the current chat is not marked as unraed as long as
+    the chat page is open.
+    
+    it returns the total number of unread messages in JSON format.
+    '''
+    unread_chats = Chat.query.filter(Chat.received_by == current_user.id, Chat.viewed == False)
+    
+    exclude = request.args.get('exclude')
+    
+    if exclude:
+        unread_chats = unread_chats.filter(Chat.sent_by != exclude)
+        
+    return {"unread_chats": len(unread_chats.all())}
     
 @app.route("/chat/<int:user_id>", methods=('GET', 'POST'))
 @login_required
@@ -387,15 +408,3 @@ def delete_item(item_id):
         
     flash("Item was successfully deleted!", 'success')
     return redirect(next if next else url_for('my_items'))
-
-@app.get("/all-contacts/check-unread-json")
-@login_required
-def check_unread_json():
-    unread_chats = Chat.query.filter(Chat.received_by == current_user.id, Chat.viewed == False)
-    
-    exclude = request.args.get('exclude')
-    
-    if exclude:
-        unread_chats = unread_chats.filter(Chat.sent_by != exclude)
-        
-    return {"unread_chats": len(unread_chats.all())}

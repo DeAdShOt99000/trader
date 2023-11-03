@@ -15,6 +15,7 @@
         chatBox.scrollTop = chatBox.scrollHeight;
     };
     
+    // Function for adding items to context item selector
     function cxtItemFunc(){
         window.itemId = this.id ? this.id.split('-')[1]: null;
 
@@ -27,6 +28,7 @@
         }, 700);
     };
 
+    // Event listner for General context button
     generalCxt.addEventListener('click', cxtItemFunc);
     
     // Send message when the "Send" button is clicked
@@ -154,6 +156,7 @@
                             chatElement.appendChild(itemTitleElement);
                         };
 
+                        // Creating and adding item to context selector in the right order
                         const reverseChat = data[Object.values(data).length-1-i]
                         if (reverseChat.item_id && !itemIds.includes(reverseChat.item_id)){
 

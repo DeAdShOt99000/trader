@@ -55,29 +55,33 @@
     {% if current_user.is_authenticated %}
     <script>
         (function(){
+            // Getting element from the DOM
             const unreadMsgs = document.querySelector('.unread-msgs');
             
+            // Variable for checking if the response was the same (for checking unread messages)
             let sameResponse;
+
+            // Recursive function that checks if there are any new messages
             function checkUnread(){
                 fetch('/all-contacts/check-unread-json')
                 .then(response => response.json())
                 .then(data => {
-                if (sameResponse !== data['unread_chats']){
-                    if (data['unread_chats']){
-                        unreadMsgs.innerText = data['unread_chats'];
-                        unreadMsgs.style.display = 'inline-flex';
-                    } else {
-                        unreadMsgs.style.display = 'none';
+                    if (sameResponse !== data['unread_chats']){
+                        if (data['unread_chats']){
+                            unreadMsgs.innerText = data['unread_chats'];
+                            unreadMsgs.style.display = 'inline-flex';
+                        } else {
+                            unreadMsgs.style.display = 'none';
+                        };
+                        sameResponse = data['unread_chats'];
                     };
-                    sameResponse = data['unread_chats'];
-                };
-            });
-            
-            setTimeout(checkUnread, 3000);
-        };
-        
-        checkUnread();
-    })()
+                });
+
+                setTimeout(checkUnread, 3000);
+            };
+
+            checkUnread();
+        })()
     </script>
     {% endif %}
     {% endblock %}
