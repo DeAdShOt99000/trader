@@ -6,6 +6,7 @@ body {
     display: grid;
     grid-template-rows: auto 1fr auto;
     height: 93%;
+    overflow: hidden;
 }
 
 .top-bar {
@@ -155,12 +156,84 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    /* overflow: hidden; */
+}
+
+.text-bar-cont {
+    position: relative;
+    width: 70%;
+}
+
+.context-item-cont {
+    position: absolute;
+    top: -46.5px;
+    left: 18px;
+    display: flex;
+    background-color: #064789;
+    padding: 2px 5px;
+    border-top-left-radius: 10px;
+    height: 24px;
+    color: rgba(128, 128, 128, 0.81);
+}
+
+.context-item-cont .mask {
+    position: absolute;
+    top: 24px;
+    width: 200px;
+    height: 100px;
+    background-color: #B1DDF1;
+}
+
+.context-item-selector {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    bottom: 24px;
+    left: 45px;
+    padding: 2px 5px;
+    border-top-right-radius: 10px;
+    background-color: #064789;
+    transform: translateY(100%);
+    transition: all .4s ease-out;
+    max-width: 150px;
+    align-items: center;
+}
+
+.context-item-selector:hover {
+    transform: translateY(28px);
+}
+
+.context-item-selector button {
+    background-color: #064789b1;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 7px;
+    padding: 0 7px;
+    overflow: hidden;
+    border-radius: 10px;
+    height: 20px;
+    width: max-content;
+    text-align: center;
+}
+
+.context-item-selector button:first-of-type {
+    background-color: #2c5f93;
+    border: 1px solid rgba(255, 255, 255, 0.419);
+}
+
+.context-item-selector button:hover {
+    background-color: #2c5f93;
 }
 
 .text-bar {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     font-size: 1.1rem;
     height: 45px;
-    width: 70%;
+    width: 100%;
     border-width: 3px;
     border-radius: 20px;
     padding: 3px 5px;

@@ -6,11 +6,27 @@
     const toBottomBtn = document.getElementById('to-bottom-btn'); // Button to scroll to bottom
     const toBottomBtnCont = document.getElementById('to-bottom-btn-container'); // Container for scroll to bottom button
     const msgCircle = document.getElementById('msg-circle'); // Unread messages circle
+    const cxtItemSelector = document.querySelector('.context-item-selector');
+    const generalCxt = cxtItemSelector.querySelector('button');
 
     // Scroll to the bottom of the chat box when the "scroll to bottom" button is clicked
     toBottomBtn.onclick = function(){
         chatBox.scrollTop = chatBox.scrollHeight;
     };
+    
+    function cxtItemFunc(){
+        window.itemId = this.id ? this.id.split('-')[1]: null;
+
+        cxtItemSelector.style.transform = 'translateY(100%)';
+        
+        cxtItemSelector.removeChild(this);
+        cxtItemSelector.prepend(this);
+        setTimeout(() => {
+            cxtItemSelector.removeAttribute('style');
+        }, 700);
+    };
+
+    generalCxt.addEventListener('click', cxtItemFunc);
     
     // Send message when the "Send" button is clicked
     document.getElementById('send').addEventListener('click', function(){
@@ -77,6 +93,8 @@
     // Variable to store the last message ID
     let last_msg_id = -2;
 
+    const itemIds = [];
+
     // Function to update messages and handle unread messages
     function updateMsg(){
         let last_msg_id_link = `?last-msg-id=${last_msg_id}`;
@@ -123,6 +141,24 @@
                             itemTitleElement.innerHTML = "<span>Item: </span>" + chat.item_title;
 
                             chatElement.appendChild(itemTitleElement);
+                        };
+
+                        const reverseChat = data[Object.values(data).length-1-i]
+                        if (reverseChat.item_id && !itemIds.includes(reverseChat.item_id)){
+
+                            if (!itemIds.length){
+                                window.itemId = reverseChat.item_id;
+                            };
+
+                            itemIds.push(reverseChat.item_id);
+
+                            const cxtItem = document.createElement('button');
+                            cxtItem.id = `item-${reverseChat.item_id}`;
+                            cxtItem.title = reverseChat.item_title;
+                            cxtItem.innerText = reverseChat.item_title;
+                            cxtItem.onclick = cxtItemFunc;
+                            
+                            cxtItemSelector.insertBefore(cxtItem, generalCxt);
                         };
 
                         const chatText = document.createElement('div');

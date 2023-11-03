@@ -20,7 +20,16 @@
     </div>
     <div id="chat-box"></div>
     <div class="bottom">
-        <input class="text-bar" type="text" name="text-message" id="text-message" placeholder="Type a message...">
+        <div class="text-bar-cont">
+            <div class="context-item-cont">
+                <div>Item:</div>
+                <div class="context-item-selector">
+                    <button title="General">General</button>
+                </div>
+                <div class="mask"></div>
+            </div>
+            <input class="text-bar" type="text" name="text-message" id="text-message" placeholder="Type a message...">
+        </div>
         <button id="send">&#10148;</button>
         <div id="to-bottom-btn-container">
             <div id="msg-circle">0</div>
