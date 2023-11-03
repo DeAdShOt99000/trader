@@ -21,8 +21,54 @@ nav {
     height: 45px;
 }
 
-.nav-search {
-    grid-template-columns: 120px 30% 100px 1fr auto;
+.search-location-cont {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding: 3px;
+    background-color: #7eccf0;
+    height: 35px;
+    width: 65%;
+    margin: auto;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-right: 4px solid #064789;
+    border-left: 4px solid #064789;
+}
+
+.search-location-cont .search {
+    border-radius: 10px;
+    padding: 5px;
+    height: 1.7rem;
+    border: 3px solid #064789;
+    background-color: #7eccf0;
+    opacity: 0.6;
+}
+
+.search-location-cont .search::placeholder {
+    color: white;
+    text-shadow: 1px 1px #064789;
+}
+
+.search-location-cont .search:hover {
+    opacity: 1;
+}
+
+.search-location-cont .location-cont {
+    padding: 3px;
+    color: #064789;
+    font-weight: bolder;
+    text-shadow: 1px 1px white;
+}
+
+.search-location-cont .location {
+    background-color: #7eccf0;
+    border: 2px solid #064789;
+    border-radius: 10px;
+    color: white;
+    width: fit-content;
+    height: fit-content;
+    padding: 0 3px;
+    text-align: center;
 }
 
 .app-name, .pge-header {
@@ -43,51 +89,6 @@ nav {
     transform: scale(104%);
 }
 
-nav .search {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    border-radius: 10px;
-    padding: 5px;
-    height: 1.7rem;
-    border: 3px solid #064789;
-    background-color: #7eccf0;
-    opacity: 0.6;
-}
-
-nav .search::placeholder {
-    color: white;
-    text-shadow: 1px 1px #064789;
-}
-
-nav .search:hover {
-    opacity: 1;
-}
-
-nav .location-cont {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    margin: 0 5px;
-    padding: 3px;
-    color: #064789;
-    font-weight: bolder;
-    font-size: 0.8rem;
-    text-shadow: 1px 1px white;
-    text-align: center;
-}
-
-nav .location {
-    background-color: #7eccf0;
-    border: 2px solid #064789;
-    border-radius: 10px;
-    color: white;
-    width: fit-content;
-    height: fit-content;
-    padding: 0 3px;
-    text-align: center;
-}
-
 .all-links {
     display: flex;
     justify-content: space-evenly;
@@ -97,6 +98,15 @@ nav .location {
     height: 35px;
     border-radius: 20px;
     margin: 5px 10px;
+}
+
+.all-links .selected {
+    background-color: #064789;
+}
+
+.all-links .selected .unread-msgs {
+    background-color: white;
+    color: #064789;
 }
 
 .all-links .nav-link:first-of-type {
@@ -132,6 +142,7 @@ nav .location {
     background-color: #064789;
     border-radius: 50%;
     font-size: 0.6rem;
+    font-weight: bolder;
     width: 20px;
     height: 20px;
     justify-content: center;
@@ -196,6 +207,7 @@ nav .location {
     background-color: #064789;
     text-align: center;
     padding: 5px 10px;
+    border-top: 3.5px solid #B1DDF1;
 }
 
 .logout, .login, .signup {
@@ -205,7 +217,7 @@ nav .location {
 }
 
 .logout {
-    bottom: -30px;
+    bottom: -32px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -215,7 +227,7 @@ nav .location {
 }
 
 .login-signup {
-    bottom: -54px;
+    bottom: -56px;
     flex-direction: column;
     align-items: center;
     gap: 5px;
@@ -237,4 +249,20 @@ nav .location {
     transition: opacity 0.4s, top 0.3s ease-out;
     z-index: 2;
     opacity: 0;
+}
+
+@media screen and (max-width: 650px){
+    .search-location-cont {
+        width: 100%;
+    }
+
+    .all-links {
+        font-size: 0.8rem;
+        margin: 5px 3px;
+    }
+
+    nav {
+        grid-template-columns: 85px 1fr auto;
+    }
+
 }

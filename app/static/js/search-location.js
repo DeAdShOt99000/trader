@@ -8,6 +8,8 @@
     const location = document.querySelector('.location');
     const search = document.querySelector('.search');
 
+    search.focus();
+
     // Function to highlight search results in the given text
     function highlight(text, word){
         // Convert text and search word to lowercase for case-insensitive search

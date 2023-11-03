@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/sell-edit.css') }}">
 {% endblock %}
 
+{% block sell_page %}selected{% endblock %}
+
 {% block content %}
     <header class="pge-header">- Sell -</header>
 
@@ -59,4 +61,7 @@
 
         {{ form.submit(class="input-field") }}
     </form>
+    <script>
+        document.getElementById('title').focus();
+    </script>
 {% endblock %}

@@ -8,20 +8,10 @@
     <script src="{{ url_for('static', filename='js/edit-delete.js') }}" defer></script>
 {% endblock %}
 
-{% block nav_search %}nav-search{% endblock %}
+{% block my_items_page %}selected{% endblock %}
+
 {% block search_location %}
-    <input type="search" class="search" placeholder="Search...">
-    <div class="location-cont">
-        <div>Location</div>
-        <select name="location" class="location" title="Location">
-            <option class="all" value="">All</option>
-            <option class="maadi" value="maadi">Maadi</option>
-            <option class="october" value="october">6 October</option>
-            <option class="faisal" value="faisal">Faisal</option>
-            <option class="madenti" value="madenti">Madenti</option>
-            <option class="haram" value="haram">Haram</option>
-        </select>
-    </div>
+    {% include 'partials/search-location.html' %}
 {% endblock %}
 
 {% block content %}

@@ -47,4 +47,7 @@
         </fieldset>
         <h4 class="signup-login-switch">Don't have an account? <a href="{{ url_for('signup') }}{% if next %}?next={{ next }}{% endif %}">Sign Up!</a></h4>
     </form>
+    <script>
+        document.getElementById('username_email').focus();
+    </script>
 {% endblock %}
