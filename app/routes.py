@@ -346,14 +346,18 @@ def favourite_json(item_id):
     
     if item in user_favourites:
         user_favourites.remove(item)
-        new_status = False
+        flash("Item was removed from favourites.", 'success')
+        # new_status = False
     else:
         user_favourites.append(item)
-        new_status = True
+        flash("Item was added to favourites!", 'success')
+        # new_status = True
         
     db.session.commit()
-    
-    return {'favourite': new_status}
+        
+    # return {'favourite': new_status}
+    next = request.args.get('next')
+    return redirect(next if next else url_for('favourites'))
 
 @app.route("/my-items/edit/<int:item_id>", methods=('GET', 'POST'))
 @login_required
@@ -379,7 +383,7 @@ def edit_item(item_id):
         
         next = request.args.get('next')
         
-        flash("Item was successfully edited!", 'success')
+        flash("Item was edited successfully!", 'success')
         return redirect(next if next else url_for('my_items'))
     return render_template('edit-item.html', form=form)
 
@@ -406,5 +410,5 @@ def delete_item(item_id):
     
     next = request.args.get('next')
         
-    flash("Item was successfully deleted!", 'success')
+    flash("Item was deleted successfully!", 'success')
     return redirect(next if next else url_for('my_items'))

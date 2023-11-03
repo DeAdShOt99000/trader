@@ -70,30 +70,14 @@
     </div>
     
 <script>
+    window.next = "?next={{ url_for('single_item', item_id=item.id) }}";
 
-    window.next = "?next={{ url_for('single_item', item_id=item.id) }}"
-
-    // Select the favorite button element with the class "favourite-btn"
-    const favouriteBtn = document.querySelector(".favourite-btn");
-
-    // Function to toggle the favorite status of an item
+    // Function to toggle the favourite status of an item
     function toggleFavourite() {
         // Check if the current user is authenticated
         if ('{{ current_user.is_authenticated }}' != 'False') {
-            // If authenticated, make a fetch request to the Flask route for toggling item favorite status
-            fetch(`{{ url_for('favourite_json', item_id=item.id) }}`)
-                .then(response => response.json())
-                .then(data => {
-                    // If the item is marked as favorite (data.favourite is true),
-                    // add the 'fav' class to the favorite button, indicating it's favorited.
-                    if (data.favourite) {
-                        favouriteBtn.classList.add('fav');
-                    } else {
-                        // If the item is not favorite (data.favourite is false),
-                        // remove the 'fav' class from the favorite button, indicating it's not favorited.
-                        favouriteBtn.classList.remove('fav');
-                    };
-                });
+            // If authenticated, make a request to the Flask route for toggling item favourite status
+            window.location.href = `/favourite-json/{{ item.id }}?next=/{{ item.id }}/`;
         } else {
             // If the user is not authenticated, redirect to the login page with a 'next' parameter
             window.location.href = "{{ url_for('login') }}?next=/{{ item.id }}/";
