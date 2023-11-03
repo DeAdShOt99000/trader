@@ -14,7 +14,7 @@
         .then(response => response.json())
         .then(data => {
             // Get the last message ID from the server response
-            const last_msg = data['last_msg'] ? data['last_msg']: -1;
+            const last_msg = data[0] ? data[0]['last_msg']: 'same';
 
             // Check if there are new messages
             if (last_msg != 'same'){

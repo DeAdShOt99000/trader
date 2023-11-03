@@ -217,7 +217,7 @@
                         idsLst.length = 0;
 
                         chatBox.insertBefore(unRead, chatBox.children[unReadPosition]);
-                        unRead.scrollIntoView();
+                        chatBox.scrollTop = unRead.offsetTop - chatBox.offsetTop;
                     } else if (unReadNumber){
                         tagAsViewed(idsLst);
 
