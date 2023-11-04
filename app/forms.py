@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, EmailField, SubmitField, FileFie
 from wtforms.validators import DataRequired, Length, EqualTo, Email, NumberRange
 
 # Import custom validation functions from your app
-from app.cust_validation_funcs import validate_password_chars, validate_username, validate_email, validate_extension
+from app.cust_validation import validate_password_chars, validate_username, validate_email, validate_extension
 
 # Form for user registration
 class SignUp(FlaskForm):
