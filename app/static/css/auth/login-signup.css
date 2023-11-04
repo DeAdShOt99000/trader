@@ -1,12 +1,9 @@
-.app-name-cont {
-    text-align: center;
-    margin: 50px;
-}
-
 .app-name {
+    display: block;
     font-size: 4.5rem;
+    margin: 50px auto;
+    width: fit-content;
 }
-
 
 .center-form {
     width: 550px;

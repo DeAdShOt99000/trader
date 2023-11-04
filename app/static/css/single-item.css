@@ -58,6 +58,11 @@ button:hover {
     background-color: lightgreen;
 }
 
+.seller-btns svg, .chat-btn svg {
+    position: relative;
+    top: 0.8px;
+}
+
 .seller-btns .delete-btn {
     border-color: red;
     color: red;
@@ -86,15 +91,7 @@ button:hover {
 
 .favourite-btn svg{
     position: relative;
-    right: 2.75px;
-    bottom: 1px;
-    margin: 5px;
-    fill: #064789;
-}
-
-.fav {
-    border-color: red;
-    background-color: rgb(255, 159, 159);
+    top: 2px;
 }
 
 .fav svg {

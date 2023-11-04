@@ -9,7 +9,7 @@
     position: relative;
     width: 440px;
     margin: auto;
-    transition: transform 0.5s;
+    transition: transform 0.3s;
 }
 
 .single-item-cont:hover {
@@ -66,7 +66,7 @@ span.egp {
 
 .lower {
     font-size: 0.85rem;
-    opacity: 0.8;
+    opacity: 0.7;
     
 }
 
@@ -104,6 +104,11 @@ span.egp {
     font-weight: bolder;
     cursor: pointer;
     opacity: 0.7;
+}
+
+.seller-page-btns .edit-delete svg {
+    position: relative;
+    top: 0.8px;
 }
 
 .seller-page-btns .edit-btn {
