@@ -18,16 +18,18 @@
     font-weight: bolder;
     text-align: center;
     text-decoration: none;
-
+    opacity: 0.7;
 }
 
 
 .active-sold-cont a:hover {
     background-color: #064789be;
+    opacity: 1;
 }
 
 .active-sold-cont a.selected {
     background-color: #064789;
+    opacity: 1;
 }
 
 .active-sold-cont svg {
