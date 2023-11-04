@@ -52,10 +52,8 @@ button:hover {
     grid-column: 1 / 3;
 }
 
-.seller-btns .edit-btn {
-    border-color: green;
-    color: green;
-    background-color: lightgreen;
+.seller-btns button {
+    margin: 0 3px;
 }
 
 .seller-btns svg, .chat-btn svg {
@@ -63,10 +61,26 @@ button:hover {
     top: 0.8px;
 }
 
+.seller-btns .status-btn svg {
+    top: 2px;
+}
+
+.seller-btns .edit-btn {
+    border-color: green;
+    color: green;
+    background-color: lightgreen;
+}
+
 .seller-btns .delete-btn {
     border-color: red;
     color: red;
     background-color: rgb(255, 159, 159);
+}
+
+.seller-btns .status-btn {
+    border-color: black;
+    color: black;
+    background-color: white;
 }
 
 .chat-btn, .seller-btns {

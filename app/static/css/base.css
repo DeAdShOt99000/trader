@@ -103,10 +103,6 @@ nav {
     overflow: hidden;
 }
 
-.all-links .selected {
-    background-color: #064789;
-}
-
 .all-links .selected .unread-msgs {
     background-color: white;
     color: #064789;
@@ -139,8 +135,12 @@ nav {
 
 .all-links .nav-link:hover {
     text-decoration: underline;
-    background-color: #064789;
+    background-color: #064789be;
     transition: background-color .2s ease-out;
+}
+
+.all-links .nav-link.selected {
+    background-color: #064789;
 }
 
 .unread-msgs {
@@ -202,7 +202,6 @@ nav {
     position: relative;
     text-align: center;
     font-size: 1.5rem;
-    color: #064789;
     color: #064789;
     text-shadow: 1.5px 1.5px white;
 }

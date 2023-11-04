@@ -19,6 +19,26 @@
     transition: transform 0.3s ease-out;
 }
 
+.center-form .price-cont {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    width: 80%;
+    margin: 10px auto;
+}
+
+.center-form #price {
+    width: 100%;
+    margin: 0;
+}
+
+.center-form .currency {
+    font-size: 1.3rem;
+    font-weight: bolder;
+    padding: 5px;
+    color: #064789;
+    text-shadow: 1px 1px white;
+}
+
 .center-form .input-field:hover {
     transform: scale(101%);
 }

@@ -1,0 +1,36 @@
+.active-sold-cont {
+    display: flex;
+    background-color: #7eccf0;
+    width: 250px;
+    /* padding: 10px; */
+    margin: 15px auto;
+    text-align: center;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.active-sold-cont a {
+    padding: 7px 10px;
+    width: 50%;
+    color: white;
+    background-color: #06478969;
+    font-size: 1.5rem;
+    font-weight: bolder;
+    text-align: center;
+    text-decoration: none;
+
+}
+
+
+.active-sold-cont a:hover {
+    background-color: #064789be;
+}
+
+.active-sold-cont a.selected {
+    background-color: #064789;
+}
+
+.active-sold-cont svg {
+    position: relative;
+    top: 3px;
+}

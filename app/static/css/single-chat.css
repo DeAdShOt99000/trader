@@ -30,20 +30,24 @@ body {
     transform: translateX(-50%);
     background-color: #7eccf0;
     border-radius: 0 0 10px 10px;
+
+    border-left: 4px solid #064789;
+    border-right: 4px solid #064789;
 }
 
-#all-contacts {
+.top-bar .back {
     position: absolute;
     height: 30px;
     padding: 3px;
     text-decoration: none;
     background-color: #7eccf0;
     border-bottom-right-radius: 10px;
+    border-right: 4px solid #064789;
     color: white;
     opacity: 0.6;
 }
 
-#all-contacts:hover {
+.top-bar .back:hover {
     opacity: 1;
 }
 

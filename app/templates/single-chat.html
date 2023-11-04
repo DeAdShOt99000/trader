@@ -13,7 +13,7 @@
 {% block content %}
 <div class="all-container">
     <div class="top-bar">
-        <a href="{% if back %}{{ back }}{% else %}{{ url_for('all_contacts') }}{% endif %}" id="all-contacts">&#8592; Back</a>
+        <a href="{% if back %}{{ back }}{% else %}{{ url_for('all_contacts') }}{% endif %}" class="back">&#8592; Back</a>
         <div class="contact-card-cont">
             {% with current_user=contact %}
             {% include 'partials/user-card.html' %}

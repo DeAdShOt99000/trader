@@ -9,7 +9,7 @@ from sqlalchemy import or_, and_
 from app import app, db, login_manager
 from app.models import User, Item, Image, Chat
 from app.forms import SellEdit
-from app.datetime_format_class import DateTimeFormat
+from app.cust_formatting import DateTimeFormat
 
 
 @login_manager.user_loader
@@ -29,7 +29,7 @@ def serve_image(img_id):
 # Index page that shows all items - Login not required
 @app.get("/")
 def index():
-    items = Item.query.order_by(Item.created_at.desc()).all()
+    items = Item.query.filter_by(is_sold=False).order_by(Item.created_at.desc()).all()
     return render_template("index.html", items=items)
 
 @app.route("/sell", methods=("GET", "POST"))
@@ -74,7 +74,7 @@ def sell():
         db.session.add(image)
         db.session.commit()
         flash("Item was added successfully!", 'success')
-        return redirect(url_for("my_items"))
+        return redirect(url_for("active_items"))
         
     return render_template("sell.html", form=form)
 
@@ -105,7 +105,7 @@ def single_item(item_id):
         if entry.id == item_id:
             item = entry
             seller = User.query.get(item.owner)
-        else:
+        elif entry.is_sold == False:
             items.append(entry)
     
     if not item:
@@ -310,14 +310,36 @@ def tag_as_viewed():
         db.session.commit()
     return {'message': 'success!'}
 
-@app.get("/my-items")
+@app.get("/my-items/active")
 @login_required
-def my_items():
+def active_items():
     '''
     Route that shows all of the current user's items - Login required
     '''
-    items = Item.query.filter_by(owner=current_user.id).order_by(Item.created_at.desc()).all()
-    return render_template('my-items.html', items=items)
+    items = Item.query.filter(Item.is_sold == False, Item.owner ==current_user.id).order_by(Item.created_at.desc()).all()
+    return render_template('active-items.html', items=items)
+
+@app.get("/my-items/sold")
+@login_required
+def sold_items():
+    items = Item.query.filter(Item.is_sold == True, Item.owner == current_user.id).all()
+    return render_template('sold-items.html', items=items)
+
+@app.get("/my-items/status-toggle/<int:item_id>")
+@login_required
+def status_toggle(item_id):
+    item = Item.query.filter(Item.id == item_id, Item.owner == current_user.id).first_or_404()
+    
+    item.is_sold = False if item.is_sold else True
+    
+    db.session.commit()
+    
+    if item.is_sold:
+        flash('Item was marked as Sold successfully!', 'success')
+    else:
+        flash('Item was marked as Active successfully!', 'success')
+    
+    return redirect(request.referrer)
 
 @app.get("/favourites")
 @login_required
@@ -384,7 +406,7 @@ def edit_item(item_id):
         next = request.args.get('next')
         
         flash("Item was edited successfully!", 'success')
-        return redirect(next if next else url_for('my_items'))
+        return redirect(next if next else url_for('active_items'))
     return render_template('edit-item.html', form=form)
 
 @app.get("/my-items/delete/<int:item_id>")
@@ -411,4 +433,5 @@ def delete_item(item_id):
     next = request.args.get('next')
         
     flash("Item was deleted successfully!", 'success')
-    return redirect(next if next else url_for('my_items'))
+    return redirect(next if next else url_for('active_items'))
+        

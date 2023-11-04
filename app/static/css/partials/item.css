@@ -29,6 +29,29 @@
     border-radius: 20px;
     border: 4px solid #064789;
     cursor: pointer;
+    overflow: hidden;
+}
+
+.black-mask {
+    position: absolute;
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+}
+
+.sold-strip {
+    position: absolute;
+    top: 35px;
+    left: -50px;
+    width: 200px;
+    color: white;
+    background-color: black;
+    text-align: center;
+    font-weight: bolder;
+    padding: 3px 0;
+    border: 2px solid white;
+    transform: rotate(-45deg);
 }
 
 .img-cont {
@@ -86,13 +109,13 @@ span.egp {
     border-bottom-left-radius: 0;
 }
 
-.seller-page-btns .edit-delete {
+.seller-page-btns .edit-delete-status {
     position: absolute;
     bottom: -22px;
     color: black;
     display: flex;
     justify-content: space-evenly;
-    width: 150px;
+    width: 300px;
     border-bottom-right-radius: 10px;
     overflow: hidden;
     border-top: 2px solid #064789;
@@ -103,27 +126,31 @@ span.egp {
     border-style: none;
     font-weight: bolder;
     cursor: pointer;
+    padding: 3px;
     opacity: 0.7;
 }
 
-.seller-page-btns .edit-delete svg {
+.seller-page-btns .edit-delete-status svg {
     position: relative;
     top: 0.8px;
 }
 
+.seller-page-btns .status-btn svg {
+    top: 2px;
+}
+
 .seller-page-btns .edit-btn {
-    padding: 3px;
     border-color: green;
     color: green;
     background-color: lightgreen;
 }
 
 .seller-page-btns .delete-btn {
-    padding: 3px;
     border-color: red;
     color: red;
     background-color: rgb(255, 159, 159);
 }
+
 
 .seller-page-btns .favourite-btn {
     position: absolute;

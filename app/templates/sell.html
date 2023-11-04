@@ -50,7 +50,9 @@
             </ul>
         {% endif %}
         
-        {{ form.price(class="input-field") }}
+        <div class="price-cont">
+            {{ form.price(class="input-field") }} <span class="currency">EGP</span>
+        </div>
         {% if form.price.errors %}
             <ul>
                 {% for err in form.price.errors %}
