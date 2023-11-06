@@ -175,7 +175,7 @@ def all_contacts_json():
         
         if sorted_lst[0]['last_msg'][2] != int(request.args.get('last-msg-id')):
             return sorted_lst
-        return {'last_msg': 'same'}
+        return [{'last_msg': 'same'}]
     return {}
 
 @app.get("/all-contacts/check-unread-json")

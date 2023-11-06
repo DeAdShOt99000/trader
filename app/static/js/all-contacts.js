@@ -14,8 +14,8 @@
         .then(response => response.json())
         .then(data => {
             // Get the last message ID from the server response
-            const last_msg = data[0] ? data[0]['last_msg']: 'same';
-
+            const last_msg = data[0] ? data[0]['last_msg']: -1;
+        
             // Check if there are new messages
             if (last_msg != 'same'){
                 // Update the last message ID
@@ -25,7 +25,7 @@
                 allContacts.innerHTML = '';
                 
                 let contact;
-
+                
                 // Check if there are contacts in the response data
                 if (Object.values(data).length > 0){
                     // Loop through the contacts data and create elements for each contact
