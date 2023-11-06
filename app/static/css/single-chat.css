@@ -81,9 +81,7 @@ body {
 }
 
 .chat-text-container {
-    /* background-color: aqua; */
     width: 100%;
-    /* min-height: 60px; */
 }
 
 .chat-text {
@@ -164,11 +162,9 @@ body {
 }
 
 .bottom {
-    /* padding: 5px; */
     display: flex;
     justify-content: center;
     align-items: center;
-    /* overflow: hidden; */
 }
 
 .text-bar-cont {
@@ -292,7 +288,6 @@ body {
 }
 
 #to-bottom-btn {
-    /* display: none; */
     padding: 8px;
     border-style: solid;
     border-radius: 50%;

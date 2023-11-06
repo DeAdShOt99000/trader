@@ -151,7 +151,6 @@ span.egp {
     background-color: rgb(255, 159, 159);
 }
 
-
 .seller-page-btns .favourite-btn {
     position: absolute;
     width: 50px;
@@ -161,11 +160,14 @@ span.egp {
     background-color: rgb(255, 159, 159);
 }
 
+.seller-page-btns .favourite-btn svg {
+    position: relative;
+    bottom: 3px;
+}
+
 .seller-page-btns button:hover {
     opacity: 1;
 }
-
-/*********Favourite page*********/
 
 .empty-pge {
     font-size: 1.7rem;
