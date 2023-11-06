@@ -187,7 +187,7 @@ body {
 .context-item-cont .mask {
     position: absolute;
     top: 24px;
-    width: 200px;
+    width: 400px;
     height: 100px;
     background-color: #B1DDF1;
 }
@@ -204,7 +204,7 @@ body {
     background-color: #064789;
     transform: translateY(100%);
     transition: all .4s ease-out;
-    max-width: 150px;
+    max-width: 250px;
     align-items: center;
 }
 

@@ -160,7 +160,7 @@
                         const reverseChat = data[Object.values(data).length-1-i]
                         if (reverseChat.item_id && !itemIds.includes(reverseChat.item_id)){
 
-                            if (!itemIds.length){
+                            if (!itemIds.length && !window.itemId){
                                 window.itemId = reverseChat.item_id;
                             };
 

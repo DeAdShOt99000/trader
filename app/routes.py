@@ -151,9 +151,9 @@ def all_contacts_json():
         for contact in my_contacts:
             contact_chat = list(filter(lambda c: c.sent_by == contact.id, chat_set))
 
-            general_last_chat = Chat.query.filter(or_(and_(Chat.sent_by == current_user.id, Chat.received_by == contact.id), and_(Chat.sent_by == contact.id, Chat.received_by == current_user.id))).order_by(Chat.sent_at.desc()).all()[0]
-            general_item = {'item_id': general_last_chat.item_id, 'item_title': Item.query.get(general_last_chat.item_id).title} if general_last_chat.item_id else None
-            general_last_msg = (cipher.decrypt(general_last_chat.text).decode(), general_last_chat.sent_at, general_last_chat.id)
+            general_last_chat = Chat.query.filter(or_(and_(Chat.sent_by == current_user.id, Chat.received_by == contact.id), and_(Chat.sent_by == contact.id, Chat.received_by == current_user.id))).order_by(Chat.sent_at.desc()).first()
+            general_item = {'item_id': general_last_chat.item_id, 'item_title': Item.query.get(general_last_chat.item_id).title} if general_last_chat and general_last_chat.item_id else None
+            general_last_msg = (cipher.decrypt(general_last_chat.text).decode(), general_last_chat.sent_at, general_last_chat.id) if general_last_chat else ('', datetime(1, 1, 1), -1)
                 
             not_viewed = len(list(filter(lambda c: c.viewed == False, contact_chat)))
             
@@ -170,6 +170,7 @@ def all_contacts_json():
             }
             
             contacts_dict_lst.append(clean_contact_dict)
+        
         sorted_lst = sorted(contacts_dict_lst, key=lambda c: c['last_msg'][1], reverse=True)
         
         if sorted_lst[0]['last_msg'][2] != int(request.args.get('last-msg-id')):
@@ -397,10 +398,14 @@ def edit_item(item_id):
         page with flash messages that shows the invalid fields.
     '''
     item = Item.query.filter_by(id=item_id, owner=current_user.id).first_or_404()
+    image = Image.query.filter_by(item_id=item.id).first_or_404()
     form = SellEdit(obj=item)
     
     if form.validate_on_submit():
         form.populate_obj(item)
+        image_data = form.image.data.read()
+        if len(image_data):
+            image.image = image_data
         db.session.commit()
         
         next = request.args.get('next')
