@@ -24,21 +24,19 @@ bcrypt = Bcrypt(app)
 
 login_manager.login_view = "login"
 migrate = Migrate(app, db)
-    
+
 app.jinja_env.globals.update(price_format=price_format)
 app.jinja_env.globals.update(date_format=date_format)
 
 with open(os.path.join(basedir, "static\\img\\default_image.jpg"), "rb") as di:
     default_image = di.read()
-    
+
 @app.errorhandler(404)
 def page_not_found(error):
-    print(type(error))
     return render_template('error.html', error=error), 404
 
 @app.errorhandler(500)
 def page_not_found(error):
-    print(type(error))
     return render_template('error.html', error=error), 500
 
 from app import routes, auth
