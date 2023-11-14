@@ -149,14 +149,14 @@
                     email.style.borderColor = 'tomato';
                     checkAll.email = 0;
                 };
+                updateSubmitState();
             });
         } else {
             emailSpan.innerHTML = '';
             email.style.borderColor = 'tomato';
             checkAll.email = 0;
+            updateSubmitState();
         };
-
-        updateSubmitState();
     };
 
     // Event listener for validating email upon input

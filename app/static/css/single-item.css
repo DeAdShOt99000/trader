@@ -144,7 +144,7 @@ button:hover {
     color: #7eccf0;
 }
 
-.description-cont {
+.description-seller-cont {
     color: #064789;
     overflow: auto;
     background-color: #7eccf065;
@@ -154,45 +154,50 @@ button:hover {
     grid-column: 3 / 5;
 }
 
-.description-cont::-webkit-scrollbar {
+.description-seller-cont::-webkit-scrollbar {
     width: 10px;
 }
 
-.description-cont::-webkit-scrollbar-thumb {
+.description-seller-cont::-webkit-scrollbar-thumb {
     background-color: #888888b4;
     border-radius: 10px;
 }
 
-.description-cont::-webkit-scrollbar-thumb:hover {
+.description-seller-cont::-webkit-scrollbar-thumb:hover {
     background-color: #888;
 
 }
-  
-.description-cont::-webkit-scrollbar-track {
+
+.description-seller-cont::-webkit-scrollbar-track {
     background-color: transparent;
 }
 
-.description-cont div {
+.description-seller-cont .header {
     font-size: 1.2rem;
     font-weight: bolder;
     color: black;
     padding: 10px 0;
 }
 
+.location-date-cont {
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .location-cont {
-    grid-column-start: 3;
-    grid-row-start: 3;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
 }
 
 .location-cont svg {
     position: relative;
-    top: 5px;
-    left: 6px;
+    bottom: 2px;
 }
 
 .item-created-at {
-    grid-column-start: -2;
-    grid-row-start: 3;
     margin-right: 10px;
 }
 

@@ -227,8 +227,7 @@ def single_chat(user_id):
     item_id = request.args.get('item-id')
         
     if request.method == "GET":
-        back = request.args.get('back')
-        return render_template('single-chat.html', contact=contact, item_id=item_id, back=back)
+        return render_template('single-chat.html', contact=contact, item_id=item_id)
     
     elif request.method == 'POST':
         text_message = request.json['text-message']
